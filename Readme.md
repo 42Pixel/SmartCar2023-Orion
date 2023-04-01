@@ -2,16 +2,16 @@
 # 任务时间：2023.3.26----2023.7.25
 
 ## 任务阶段
-[] 3.26-4.15：
 
-​```mermaid
+~~~mermaid
 gantt
-    title 简单的甘特图
-    dateFormat  YYYY-MM-DD
-    section 分区1
-    任务1-1           :a1, 2014-01-01, 30d
-    任务1-2           :after a1  , 20d
-    section 分区2
-    任务2-1      :2014-01-12  , 12d
-    任务2-2      : 24d
-​```
+    title Fastest Car
+    dateFormat 2023.3.26
+    section 初期任务
+    硬件搭建及测试 :a1, 2023-03-25, 11d
+    section 中期任务
+    任务2-1      :2023-04-5  , 12d
+
+
+
+~~~
