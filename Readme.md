@@ -8,6 +8,7 @@
 gantt
     title Fastest Car
     dateFormat 2023.3.25
+    
     section 初期任务
     硬件搭建及测试:    active,des1, 2023-03-25, 11d
     无刷电机闭环控制:          des2, after des1, 5d
@@ -19,9 +20,16 @@ gantt
     section 中期任务
     GPS循迹测试 :             d1, 2023-04-22, 3d
     GPS绕锥桶&S形:            d2, after d1,   5d
-~~~
 
-## 任务细节 
+    section 紧急任务(动态更新)
+    动态更新 :               crit, c1, 2023-04-01, 6h
+    
+   ~~~
+
+
+
+
+## 任务分配&细节 
 **硬件搭建及测试**
 - [x] 控制板，驱动板安装，信号线连接
 - [ ] 转接板固定PCB绘制及制作
