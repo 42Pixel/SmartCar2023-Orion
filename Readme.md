@@ -16,8 +16,8 @@ gantt
     GPS寻直线实现:             des6, after des5, 2d
  
     section 中期任务
-    GPS循迹测试 :             d1, 2023-04-23, 3d
-    GPS绕锥桶&S形:            d2, after d1, 5d
+    GPS循迹测试 :             d1, 2023-04-22, 3d
+    GPS绕锥桶&S形:            d2, after d1,   5d
 
 ~~~
 
