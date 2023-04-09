@@ -22,7 +22,7 @@ gantt
     GPS绕锥桶&S形:            d2, after d1,   5d
 
     section 紧急任务(动态更新)
-    动态更新 :               crit, done,c1, 2023-04-01, 1d
+    无刷电机闭环控制:               crit,c1, 2023-04-09, 5d
     
    ~~~
 
