@@ -98,27 +98,24 @@ RM := rm -rf
 -include libraries/infineon_libraries/Service/CpuGeneric/StdIf/subdir.mk
 -include libraries/infineon_libraries/Service/CpuGeneric/If/subdir.mk
 -include libraries/infineon_libraries/Infra/Platform/Tricore/Compilers/subdir.mk
--include subdir.mk
--include objects.mk
-
 ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(strip $(CC_DEPS)),)
--include $(CC_DEPS)
-endif
 ifneq ($(strip $(C++_DEPS)),)
 -include $(C++_DEPS)
 endif
-ifneq ($(strip $(C_UPPER_DEPS)),)
--include $(C_UPPER_DEPS)
-endif
-ifneq ($(strip $(CXX_DEPS)),)
--include $(CXX_DEPS)
+ifneq ($(strip $(CC_DEPS)),)
+-include $(CC_DEPS)
 endif
 ifneq ($(strip $(CPP_DEPS)),)
 -include $(CPP_DEPS)
 endif
+ifneq ($(strip $(CXX_DEPS)),)
+-include $(CXX_DEPS)
+endif
 ifneq ($(strip $(C_DEPS)),)
 -include $(C_DEPS)
+endif
+ifneq ($(strip $(C_UPPER_DEPS)),)
+-include $(C_UPPER_DEPS)
 endif
 endif
 
@@ -147,14 +144,14 @@ all: main-build
 main-build: Seekfree_TC264_Opensource_Library.elf secondary-outputs
 
 # Tool invocations
-Seekfree_TC264_Opensource_Library.elf: $(OBJS) makefile objects.mk $(OPTIONAL_TOOL_DEPS)
+Seekfree_TC264_Opensource_Library.elf: $(OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: TASKING Linker'
-	cctc -lrt -lfp_fpu -lcs_fpu  -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy "E:\Git-Files\Fastest-Car\²Î¿¼×ÊÁÏ\TC264_Library-master\TC264_Library-master\Seekfree_TC264_Opensource_Library\libraries\zf_device\zf_device_config.a" -Wl--map-file="Seekfree_TC264_Opensource_Library.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --exceptions --strict --anachronisms --force-c++ -Ctc26xb   -o"Seekfree_TC264_Opensource_Library.elf" -Wl-o"Seekfree_TC264_Opensource_Library.hex:IHEX" --lsl-core=vtc  --lsl-file=../Lcf_Tasking_Tricore_Tc.lsl $(OBJS)
+	cctc --lsl-file="../Lcf_Tasking_Tricore_Tc.lsl" -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy "E:\Git-Files\Fastest-Car\ProjectFiles\Software\Seekfree_TC264_Opensource_Library\libraries\zf_device\zf_device_config.a" -Wl--map-file="Seekfree_TC264_Opensource_Library.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 -lcs_fpu -lfp_fpu -lrt --lsl-core=vtc --exceptions --strict --anachronisms --force-c++ -Ctc26xb -o"Seekfree_TC264_Opensource_Library.elf" -Wl-o"Seekfree_TC264_Opensource_Library.hex:IHEX" $(OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Seekfree_TC264_Opensource_Library.siz: Seekfree_TC264_Opensource_Library.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
+Seekfree_TC264_Opensource_Library.siz: Seekfree_TC264_Opensource_Library.elf makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Print Size'
 	elfsize  "Seekfree_TC264_Opensource_Library.elf"
 	@echo 'Finished building: $@'

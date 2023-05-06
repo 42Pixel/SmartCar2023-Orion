@@ -31,6 +31,7 @@
 * 修改记录
 * 日期              作者                备注
 * 2022-09-15       pudding            first version
+* 2023-04-26       pudding            新增初始化完成标志等待操作，需要等待CPU0初始化完成后其他CPU才能进行赋值
 ********************************************************************************************************************/
 
 #include "IfxScuEru.h"
@@ -42,9 +43,9 @@
 #include "zf_common_clock.h"
 
 
-App_Cpu0 g_AppCpu0;                               // 频率信息变量
+App_Cpu0 g_AppCpu0;                                 // 频率信息变量
 
-static uint8 cpu_init_finsh[IfxCpu_Id_none];      // 核心初始化完成标志位
+static vuint8 cpu_init_finish[IfxCpu_Id_none];      // 核心初始化完成标志位
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介          设置系统频率
@@ -109,19 +110,24 @@ void clock_init (void)
 void cpu_wait_event_ready (void)
 {
     uint8 i;
-    uint8 all_cpu_init_finsh;
+    uint8 all_cpu_init_finish;
+
+    if(IfxCpu_getCoreId() != 0)
+    {
+        while(cpu_init_finish[0] == 0);
+    }
 
     // 调用此函数的核心初始化完毕，标志位置一
-    cpu_init_finsh[IfxCpu_getCoreId()] = 1;
+    cpu_init_finish[IfxCpu_getCoreId()] = 1;
 
     // 等待其他核心初始化完毕
     do
     {
-        all_cpu_init_finsh = 1;
+        all_cpu_init_finish = 1;
         for(i = 0; i < IfxCpu_Id_none; i++)
         {
-            all_cpu_init_finsh *= cpu_init_finsh[i];
+            all_cpu_init_finish *= cpu_init_finish[i];
         }
         system_delay_ms(1);
-    }while(0 == all_cpu_init_finsh);
+    }while(0 == all_cpu_init_finish);
 }

@@ -56,14 +56,14 @@
 #include "zf_driver_spi.h"
 #include "zf_device_tft180.h"
 
-static uint16                   tft180_pencolor     = TFT180_DEFAULT_PENCOLOR;
-static uint16                   tft180_bgcolor      = TFT180_DEFAULT_BGCOLOR;
+static uint16                   tft180_pencolor     = TFT180_DEFAULT_PENCOLOR;          // 画笔颜色(字体色)
+static uint16                   tft180_bgcolor      = TFT180_DEFAULT_BGCOLOR;           // 背景颜色
 
-static tft180_dir_enum          tft180_display_dir  = TFT180_DEFAULT_DISPLAY_DIR;
-static tft180_font_size_enum    tft180_display_font = TFT180_DEFAULT_DISPLAY_FONT;
+static tft180_dir_enum          tft180_display_dir  = TFT180_DEFAULT_DISPLAY_DIR;       // 显示方向
+static tft180_font_size_enum    tft180_display_font = TFT180_DEFAULT_DISPLAY_FONT;      // 显示字体类型
 
-static uint8            tft180_x_max        = 160;
-static uint8            tft180_y_max        = 128;
+static uint8                    tft180_x_max        = 160;                              // 屏幕X轴像素最大值
+static uint8                    tft180_y_max        = 128;                              // 屏幕Y轴像素最大值
 
 #if TFT180_USE_SOFT_SPI
 static soft_spi_info_struct             tft180_spi;
@@ -138,33 +138,38 @@ static void tft180_set_region (uint16 x1, uint16 y1, uint16 x2, uint16 y2)
     zf_assert(x2 < tft180_x_max);
     zf_assert(y2 < tft180_y_max);
 
-    if(tft180_display_dir == TFT180_PORTAIT || tft180_display_dir == TFT180_PORTAIT_180)
+    switch(tft180_display_dir)
     {
-        tft180_write_index(0x2a);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x1 + 2);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x2 + 2);
+        case TFT180_PORTAIT:
+        case TFT180_PORTAIT_180:
+        {
+            tft180_write_index(0x2a);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x1 + 2);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x2 + 2);
 
-        tft180_write_index(0x2b);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y1 + 1);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y2 + 1);
-    }
-    else
-    {
-        tft180_write_index(0x2a);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(x1 + 1);
-        tft180_write_8bit_data(0x0);
-        tft180_write_8bit_data(x2 + 1);
+            tft180_write_index(0x2b);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y1 + 1);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y2 + 1);
+        }break;
+        case TFT180_CROSSWISE:
+        case TFT180_CROSSWISE_180:
+        {
+            tft180_write_index(0x2a);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(x1 + 1);
+            tft180_write_8bit_data(0x0);
+            tft180_write_8bit_data(x2 + 1);
 
-        tft180_write_index(0x2b);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y1 + 2);
-        tft180_write_8bit_data(0x00);
-        tft180_write_8bit_data(y2 + 2);
+            tft180_write_index(0x2b);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y1 + 2);
+            tft180_write_8bit_data(0x00);
+            tft180_write_8bit_data(y2 + 2);
+        }break;
     }
     tft180_write_index(0x2c);
 }
@@ -188,20 +193,23 @@ static void tft180_debug_init(void)
     switch(tft180_display_font)
     {
         case TFT180_6X8_FONT:
+        {
             info.font_x_size = 6;
             info.font_y_size = 8;
-            break;
+        }break;
         case TFT180_8X16_FONT:
+        {
             info.font_x_size = 8;
             info.font_y_size = 16;
-            break;
+        }break;
         case TFT180_16X16_FONT:
+        {
             // 暂不支持
-            break;
+        }break;
     }
     info.output_screen = tft180_show_string;
     info.output_screen_clear = tft180_clear;
-
+        
     debug_output_init(&info);
 }
 
@@ -218,7 +226,7 @@ void tft180_clear (void)
 
     TFT180_CS(0);
     tft180_set_region(0, 0, tft180_x_max - 1, tft180_y_max - 1);
-    for( ; i > 0; i --)
+    for( ; 0 < i; i --)
     {
         tft180_write_16bit_data(tft180_bgcolor);
     }
@@ -238,7 +246,7 @@ void tft180_full (const uint16 color)
 
     TFT180_CS(0);
     tft180_set_region(0, 0, tft180_x_max - 1, tft180_y_max - 1);
-    for( ; i > 0; i --)
+    for( ; 0 < i; i --)
     {
         tft180_write_16bit_data(color);
     }
@@ -255,15 +263,20 @@ void tft180_full (const uint16 color)
 void tft180_set_dir (tft180_dir_enum dir)
 {
     tft180_display_dir = dir;
-    if(dir < 2)
+    switch(tft180_display_dir)
     {
-        tft180_x_max = 128;
-        tft180_y_max = 160;
-    }
-    else
-    {
-        tft180_x_max = 160;
-        tft180_y_max = 128;
+        case TFT180_PORTAIT:
+        case TFT180_PORTAIT_180:
+        {
+            tft180_x_max = 128;
+            tft180_y_max = 160;
+        }break;
+        case TFT180_CROSSWISE:
+        case TFT180_CROSSWISE_180:
+        {
+            tft180_x_max = 160;
+            tft180_y_max = 128;
+        }break;
     }
 }
 
@@ -339,39 +352,42 @@ void tft180_draw_line (uint16 x_start, uint16 y_start, uint16 x_end, uint16 y_en
     int16 y_dir = (y_start < y_end ? 1 : -1);
     float temp_rate = 0;
     float temp_b = 0;
-    if(x_start != x_end)
+    do
     {
-        temp_rate = (float)(y_start - y_end) / (float)(x_start - x_end);
-        temp_b = (float)y_start - (float)x_start * temp_rate;
-    }
-    else
-    {
-        while(y_start != y_end)
+        if(x_start != x_end)
         {
-            tft180_draw_point(x_start, y_start, color);
-            y_start += y_dir;
+            temp_rate = (float)(y_start - y_end) / (float)(x_start - x_end);
+            temp_b = (float)y_start - (float)x_start * temp_rate;
         }
-        return;
-    }
-
-    if(func_abs(y_start - y_end) > func_abs(x_start - x_end))
-    {
-        while(y_start != y_end)
+        else
         {
-            tft180_draw_point(x_start, y_start, color);
-            y_start += y_dir;
-            x_start = (int16)(((float)y_start - temp_b) / temp_rate);
+            while(y_start != y_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                y_start += y_dir;
+            }
+            break;
         }
-    }
-    else
-    {
-        while(x_start != x_end)
+        
+        if(func_abs(y_start - y_end) > func_abs(x_start - x_end))
         {
-            tft180_draw_point(x_start, y_start, color);
-            x_start += x_dir;
-            y_start = (int16)((float)x_start * temp_rate + temp_b);
+            while(y_start != y_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                y_start += y_dir;
+                x_start = (int16)(((float)y_start - temp_b) / temp_rate);
+            }
         }
-    }
+        else
+        {
+            while(x_start != x_end)
+            {
+                tft180_draw_point(x_start, y_start, color);
+                x_start += x_dir;
+                y_start = (int16)((float)x_start * temp_rate + temp_b);
+            }
+        }
+    }while(0);
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -390,18 +406,19 @@ void tft180_show_char (uint16 x, uint16 y, const char dat)
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
 
-    uint8 i,j;
+    uint8 i = 0, j = 0;
 
     TFT180_CS(0);
     switch(tft180_display_font)
     {
         case TFT180_6X8_FONT:
-            for(i = 0; i < 6; i ++)
+        {
+            for(i = 0; 6 > i; i ++)
             {
                 tft180_set_region(x + i, y, x + i, y + 8);
                 // 减 32 因为是取模是从空格开始取得 空格在 ascii 中序号是 32
                 uint8 temp_top = ascii_font_6x8[dat - 32][i];
-                for(j = 0; j < 8; j ++)
+                for(j = 0; 8 > j; j ++)
                 {
                     if(temp_top & 0x01)
                     {
@@ -414,15 +431,16 @@ void tft180_show_char (uint16 x, uint16 y, const char dat)
                     temp_top >>= 1;
                 }
             }
-            break;
+        }break;
         case TFT180_8X16_FONT:
-            for(i = 0; i < 8; i ++)
+        {
+            for(i = 0; 8 > i; i ++)
             {
                 tft180_set_region(x + i, y, x + i, y + 15);
                 // 减 32 因为是取模是从空格开始取得 空格在 ascii 中序号是 32
                 uint8 temp_top = ascii_font_8x16[dat - 32][i];
                 uint8 temp_bottom = ascii_font_8x16[dat - 32][i + 8];
-                for(j = 0; j < 8; j ++)
+                for(j = 0; 8 > j; j ++)
                 {
                     if(temp_top & 0x01)
                     {
@@ -434,7 +452,7 @@ void tft180_show_char (uint16 x, uint16 y, const char dat)
                     }
                     temp_top >>= 1;
                 }
-                for(j = 0; j < 8; j ++)
+                for(j = 0; 8 > j; j ++)
                 {
                     if(temp_bottom & 0x01)
                     {
@@ -447,10 +465,11 @@ void tft180_show_char (uint16 x, uint16 y, const char dat)
                     temp_bottom >>= 1;
                 }
             }
-            break;
+        }break;
         case TFT180_16X16_FONT:
+        {
             // 暂不支持
-            break;
+        }break;
     }
     TFT180_CS(1);
 }
@@ -472,22 +491,15 @@ void tft180_show_string (uint16 x, uint16 y, const char dat[])
     zf_assert(y < tft180_y_max);
 
     uint16 j = 0;
-    while(dat[j] != '\0')
+    while('\0' != dat[j])
     {
         switch(tft180_display_font)
         {
-            case TFT180_6X8_FONT:
-                tft180_show_char(x + 6 * j, y, dat[j]);
-                j ++;
-                break;
-            case TFT180_8X16_FONT:
-                tft180_show_char(x + 8 * j, y, dat[j]);
-                j ++;
-                break;
-            case TFT180_16X16_FONT:
-                // 暂不支持
-                break;
+            case TFT180_6X8_FONT:   tft180_show_char(x + 6 * j, y, dat[j]); break;
+            case TFT180_8X16_FONT:  tft180_show_char(x + 8 * j, y, dat[j]); break;
+            case TFT180_16X16_FONT: break;                                      // 暂不支持
         }
+        j ++;
     }
 }
 
@@ -507,8 +519,8 @@ void tft180_show_int (uint16 x, uint16 y, const int32 dat, uint8 num)
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 10);
+    zf_assert(0 < num);
+    zf_assert(10 >= num);
 
     int32 dat_temp = dat;
     int32 offset = 1;
@@ -517,10 +529,12 @@ void tft180_show_int (uint16 x, uint16 y, const int32 dat, uint8 num)
     memset(data_buffer, 0, 12);
     memset(data_buffer, ' ', num + 1);
 
-    if(num < 10)
+    if(10 > num)
     {
-        for(; num > 0; num --)
+        for(; 0 < num; num --)
+        {
             offset *= 10;
+        }
         dat_temp %= offset;
     }
     func_int_to_str(data_buffer, dat_temp);
@@ -543,8 +557,8 @@ void tft180_show_uint (uint16 x, uint16 y, const uint32 dat, uint8 num)
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 10);
+    zf_assert(0 < num);
+    zf_assert(10 >= num);
 
     uint32 dat_temp = dat;
     int32 offset = 1;
@@ -552,10 +566,12 @@ void tft180_show_uint (uint16 x, uint16 y, const uint32 dat, uint8 num)
     memset(data_buffer, 0, 12);
     memset(data_buffer, ' ', num);
 
-    if(num < 10)
+    if(10 > num)
     {
-        for(; num > 0; num --)
+        for(; 0 < num; num --)
+        {
             offset *= 10;
+        }
         dat_temp %= offset;
     }
     func_uint_to_str(data_buffer, dat_temp);
@@ -582,10 +598,10 @@ void tft180_show_float (uint16 x, uint16 y, const float dat, uint8 num, uint8 po
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(num > 0);
-    zf_assert(num <= 8);
-    zf_assert(pointnum > 0);
-    zf_assert(pointnum <= 6);
+    zf_assert(0 < num);
+    zf_assert(8 >= num);
+    zf_assert(0 < pointnum);
+    zf_assert(6 >= pointnum);
 
     float dat_temp = dat;
     float offset = 1.0;
@@ -659,7 +675,10 @@ void tft180_show_binary_image (uint16 x, uint16 y, const uint8 *image, uint16 wi
 // 参数说明     threshold       二值化显示阈值 0-不开启二值化
 // 返回参数     void
 // 使用示例     tft180_show_gray_image(0, 0, mt9v03x_image[0], MT9V03X_W, MT9V03X_H, MT9V03X_W / 2, MT9V03X_H / 2, 0);
-// 备注信息
+// 备注信息     用于显示总钻风的图像
+//              如果要显示二值化图像 直接修改最后一个参数为需要的二值化阈值即可
+//              如果要显示二值化图像 直接修改最后一个参数为需要的二值化阈值即可
+//              如果要显示二值化图像 直接修改最后一个参数为需要的二值化阈值即可
 //-------------------------------------------------------------------------------------------------------------------
 void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold)
 {
@@ -667,7 +686,7 @@ void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 widt
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(image != NULL);
+    zf_assert(NULL != image);
 
     uint32 i = 0, j = 0;
     uint16 color = 0,temp = 0;
@@ -691,9 +710,13 @@ void tft180_show_gray_image (uint16 x, uint16 y, const uint8 *image, uint16 widt
                 tft180_write_16bit_data(color);
             }
             else if(temp < threshold)
+            {
                 tft180_write_16bit_data(RGB565_BLACK);
+            }
             else
+            {
                 tft180_write_16bit_data(RGB565_WHITE);
+            }
         }
     }
     TFT180_CS(1);
@@ -719,7 +742,7 @@ void tft180_show_rgb565_image (uint16 x, uint16 y, const uint16 *image, uint16 w
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(image != NULL);
+    zf_assert(NULL != image);
 
     uint32 i = 0, j = 0;
     uint16 color = 0;
@@ -736,7 +759,9 @@ void tft180_show_rgb565_image (uint16 x, uint16 y, const uint16 *image, uint16 w
             width_index = i * width / dis_width;
             color = *(image + height_index * width + width_index);              // 读取像素点
             if(color_mode)
+            {
                 color = ((color & 0xff) << 8) | (color >> 8);
+            }
             tft180_write_16bit_data(color);
         }
     }
@@ -762,7 +787,7 @@ void tft180_show_wave (uint16 x, uint16 y, const uint16 *wave, uint16 width, uin
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(wave != NULL);
+    zf_assert(NULL != wave);
 
     uint32 i = 0, j = 0;
     uint32 width_index = 0, value_max_index = 0;
@@ -804,11 +829,11 @@ void tft180_show_chinese (uint16 x, uint16 y, uint8 size, const uint8 *chinese_b
     // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
     zf_assert(x < tft180_x_max);
     zf_assert(y < tft180_y_max);
-    zf_assert(chinese_buffer != NULL);
+    zf_assert(NULL != chinese_buffer);
 
-    int i, j, k;
-    uint8 temp, temp1, temp2;
-    const uint8 *p_data;
+    int i = 0, j = 0, k = 0; 
+    uint8 temp = 0, temp1 = 0, temp2 = 0;
+    const uint8 *p_data = chinese_buffer;
 
     temp2 = size / 8;
 
@@ -823,11 +848,17 @@ void tft180_show_chinese (uint16 x, uint16 y, uint8 size, const uint8 *chinese_b
         {
             for(k = 0; k < temp2; k ++)
             {
-                for(j = 8; j > 0; j --)
+                for(j = 8; 0 < j; j --)
                 {
                     temp = (*p_data >> (j - 1)) & 0x01;
-                    if(temp)    tft180_write_16bit_data(color);
-                    else        tft180_write_16bit_data(tft180_bgcolor);
+                    if(temp)
+                    {
+                        tft180_write_16bit_data(color);
+                    }
+                    else
+                    {
+                        tft180_write_16bit_data(tft180_bgcolor);
+                    }
                 }
                 p_data ++;
             }
@@ -859,7 +890,6 @@ void tft180_init (void)
 
     tft180_set_dir(tft180_display_dir);
     tft180_set_color(tft180_pencolor, tft180_bgcolor);
-    tft180_debug_init();
 
     TFT180_RST(0);
     system_delay_ms(10);
@@ -916,10 +946,10 @@ void tft180_init (void)
     tft180_write_index(0x36);
     switch(tft180_display_dir)                                                  // y x v
     {
-        case 0: tft180_write_8bit_data(1<<7 | 1<<6 | 0<<5);  break;             // 竖屏模式
-        case 1: tft180_write_8bit_data(0<<7 | 0<<6 | 0<<5);  break;             // 竖屏模式  旋转180
-        case 2: tft180_write_8bit_data(1<<7 | 0<<6 | 1<<5);  break;             // 横屏模式
-        case 3: tft180_write_8bit_data(0<<7 | 1<<6 | 1<<5);  break;             // 横屏模式  旋转180
+        case TFT180_PORTAIT:        tft180_write_8bit_data(1<<7 | 1<<6 | 0<<5);  break;
+        case TFT180_PORTAIT_180:    tft180_write_8bit_data(0<<7 | 0<<6 | 0<<5);  break;
+        case TFT180_CROSSWISE:      tft180_write_8bit_data(1<<7 | 0<<6 | 1<<5);  break;
+        case TFT180_CROSSWISE_180:  tft180_write_8bit_data(0<<7 | 1<<6 | 1<<5);  break;
     }
 
     tft180_write_index(0xe0);
@@ -981,4 +1011,5 @@ void tft180_init (void)
     TFT180_CS(1);
 
     tft180_clear();
+    tft180_debug_init();
 }

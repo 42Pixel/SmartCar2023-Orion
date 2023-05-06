@@ -31,6 +31,7 @@
 * 修改记录
 * 日期              作者                备注
 * 2022-09-15       pudding            first version
+* 2023-04-25       pudding            增加中文注释说明
 ********************************************************************************************************************/
 
 #ifndef _zf_device_camera_h_
@@ -41,15 +42,17 @@
 #include "zf_driver_uart.h"
 #include "zf_device_type.h"
 
-#define CAMERA_RECEIVER_BUFFER_SIZE     (8)
+//=================================================摄像头公共库 基本配置================================================
+#define CAMERA_RECEIVER_BUFFER_SIZE     (8)         // 定义摄像头接收数据缓冲区大小
+extern fifo_struct camera_receiver_fifo;            // 声明摄像头接收数据fifo结构体
+extern uint8 camera_send_image_frame_header[4];     // 声明摄像头数据发送到上位机的帧头
+//=================================================摄像头公共库 基本配置================================================
 
-extern fifo_struct camera_receiver_fifo;
-
-//================================================摄像头公共库 基础函数====================================================
-void  camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32 image_size);
-void  camera_send_image                 (uart_index_enum uartn, const uint8 *image_addr, uint32 image_size);
-void  camera_fifo_init                  (void);
-uint8 camera_init                       (uint8 *source_addr, uint8 *destination_addr, uint16 image_size);
-//================================================摄像头公共库 基础函数====================================================
+//=================================================摄像头公共库 基础函数================================================
+void  camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32 image_size);                  // 摄像头二进制图像数据解压为十六进制八位数据 小钻风用
+void  camera_send_image                 (uart_index_enum uartn, const uint8 *image_addr, uint32 image_size);    // 摄像头图像发送至上位机查看图像
+void  camera_fifo_init                  (void);                                                                 // 摄像头串口 FIFO 初始化
+uint8 camera_init                       (uint8 *source_addr, uint8 *destination_addr, uint16 image_size);       // 摄像头采集初始化
+//=================================================摄像头公共库 基础函数================================================
 
 #endif

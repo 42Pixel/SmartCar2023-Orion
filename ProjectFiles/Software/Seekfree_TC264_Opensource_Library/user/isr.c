@@ -41,7 +41,7 @@ IFX_INTERRUPT(cc60_pit_ch0_isr, 0, CCU6_0_CH0_ISR_PRIORITY)
 {
     interrupt_global_enable(0);                     // 开启中断嵌套
     pit_clear_flag(CCU60_CH0);
-    tsl1401_collect_pit_handler();                  // 线阵CCD采集
+
 
 }
 
@@ -74,7 +74,6 @@ IFX_INTERRUPT(cc61_pit_ch1_isr, 0, CCU6_1_CH1_ISR_PRIORITY)
 
 
 
-
 }
 // **************************** PIT中断函数 ****************************
 
@@ -86,9 +85,6 @@ IFX_INTERRUPT(exti_ch0_ch4_isr, 0, EXTI_CH0_CH4_INT_PRIO)
     if(exti_flag_get(ERU_CH0_REQ0_P15_4))           // 通道0中断
     {
         exti_flag_clear(ERU_CH0_REQ0_P15_4);
-        wireless_module_uart_handler();                 // 无线模块统一回调函数
-
-
 
     }
 
@@ -116,8 +112,6 @@ IFX_INTERRUPT(exti_ch1_ch5_isr, 0, EXTI_CH1_CH5_INT_PRIO)
     if(exti_flag_get(ERU_CH5_REQ1_P15_8))           // 通道5中断
     {
         exti_flag_clear(ERU_CH5_REQ1_P15_8);
-
-
 
 
     }
@@ -262,7 +256,7 @@ IFX_INTERRUPT(uart3_rx_isr, 0, UART3_RX_INT_PRIO)
     IfxAsclin_Asc_isrReceive(&uart3_handle);
 
 
-
+    gps_uart_callback();
 
 
 }

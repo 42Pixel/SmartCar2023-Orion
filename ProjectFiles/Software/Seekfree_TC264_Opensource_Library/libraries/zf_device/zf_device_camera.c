@@ -30,7 +30,8 @@
 *
 * 修改记录
 * 日期              作者                备注
-* 2022-09-15       pudding             first version
+* 2022-09-15       pudding           first version
+* 2023-04-25       pudding           增加中文注释说明
 ********************************************************************************************************************/
 
 #include "zf_common_debug.h"
@@ -44,9 +45,9 @@
 #include "zf_device_camera.h"
 
 
-fifo_struct camera_receiver_fifo;
-uint8 camera_receiver_buffer[CAMERA_RECEIVER_BUFFER_SIZE];
-uint8 camera_send_image_frame_header[4] = {0x00, 0xFF, 0x01, 0x01};
+fifo_struct camera_receiver_fifo;                                           // 定义摄像头接收数据fifo结构体
+uint8 camera_receiver_buffer[CAMERA_RECEIVER_BUFFER_SIZE];                  // 定义摄像头接收数据缓冲区
+uint8 camera_send_image_frame_header[4] = {0x00, 0xFF, 0x01, 0x01};         // 定义摄像头数据发送到上位机的帧头
 
 //-------------------------------------------------------------------------------------------------------------------
 // @brief       摄像头二进制图像数据解压为十六进制八位数据 小钻风用
@@ -54,13 +55,14 @@ uint8 camera_send_image_frame_header[4] = {0x00, 0xFF, 0x01, 0x01};
 // @param       *data2          存放解压数据的地址
 // @param       image_size      图像的大小
 // @return      void
-// Sample usage:                camera_binary_image_decompression(&ov7725_image_binary[0][0], &data_buffer[0][0], OV7725_SIZE);
+// Sample usage:   camera_binary_image_decompression(&ov7725_image_binary[0][0], &data_buffer[0][0], OV7725_SIZE);
 //-------------------------------------------------------------------------------------------------------------------
 void camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32 image_size)
 {
+    zf_assert(NULL != data1);
+    zf_assert(NULL != data2);
     uint8  i = 8;
-    zf_assert(data1 != NULL);
-    zf_assert(data2 != NULL);
+
     while(image_size --)
     {
         i = 8;
@@ -82,7 +84,7 @@ void camera_binary_image_decompression (const uint8 *data1, uint8 *data2, uint32
 //-------------------------------------------------------------------------------------------------------------------
 void camera_send_image (uart_index_enum uartn, const uint8 *image_addr, uint32 image_size)
 {
-    zf_assert(image_addr != NULL);
+    zf_assert(NULL != image_addr);
     // 发送命令
     uart_write_buffer(uartn, camera_send_image_frame_header, 4);
 
@@ -104,7 +106,7 @@ void camera_fifo_init (void)
 
 
 //-------------------------------------------------------------------------------------------------------------------
-// @brief       摄像头初始化
+// @brief       摄像头采集初始化
 // @param       image_size      图像的大小
 // @return      void
 // @param       image_size      图像的大小
@@ -160,7 +162,7 @@ uint8 camera_init (uint8 *source_addr, uint8 *destination_addr, uint16 image_siz
                                      EXTI_TRIGGER_RISING,
                                      image_size);                               // 如果超频到300M 倒数第二个参数请设置为FALLING
 
-            exti_init(SCC8660_VSYNC_PIN, EXTI_TRIGGER_FALLING);                  // 初始化场中断，并设置为下降沿触发中断
+            exti_init(SCC8660_VSYNC_PIN, EXTI_TRIGGER_FALLING);                 // 初始化场中断，并设置为下降沿触发中断
             break;
         default:
             break;
