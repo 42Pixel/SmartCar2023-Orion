@@ -1,6 +1,3 @@
-//
-// Created by FLY on 2022/5/2.
-//
 #include "key.h"
 
 #define KEY1 G0
@@ -10,9 +7,6 @@
 
 #define BEEP_PIN   D12       //蜂鸣器引脚
 
-/*Dial_switch*/
-#define Dial_switch1 D14
-#define Dial_switch2 D15
 
 int Beep_flag;
 
