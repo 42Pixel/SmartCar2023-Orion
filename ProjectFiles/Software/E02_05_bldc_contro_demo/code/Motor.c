@@ -8,16 +8,22 @@
 #define ENCODER_PLUS       (TIM5_ENCODER_CH1_P10_3)                           // 编码器计数端口
 #define ENCODER_DIR        (TIM5_ENCODER_CH2_P10_1)                           // 编码器方向采值端口
 
-int8 Motor_Duty;
-int8 Speed_Target;
-int16 encoder;
-bool dir = true;
+#define SERVO_MOTOR_PWM             (ATOM1_CH1_P33_9)                         // 定义主板上舵机对应引脚
+#define SERVO_MOTOR_FREQ            (50 )                                     // 定义主板上舵机频率  请务必注意范围 50-300
 
+#define SERVO_MOTOR_L_MAX           (50 )                                     // 定义主板上舵机活动范围 角度
+#define SERVO_MOTOR_R_MAX           (150)                                     // 定义主板上舵机活动范围 角度
 
+#define SERVO_MOTOR_DUTY(x)         ((float)PWM_DUTY_MAX/(1000.0/(float)SERVO_MOTOR_FREQ)*(0.5+(float)(x)/90.0))        //舵机PWM计算
 
-float Position_KP =10;
-float Position_KI =0;
-float Position_KD =5;
+#if (SERVO_MOTOR_FREQ<50 || SERVO_MOTOR_FREQ>300)
+    #error "SERVO_MOTOR_FREQ ERROE!"
+#endif
+
+float servo_motor_duty = 100.0;                                               // 舵机动作角度                                                    // 舵机动作状态
+
+int8 Speed_Duty=20;                                                           // 速度设定值
+int16 Encoder;                                                                // 编码器计数
 
 
 //----------------------------------------------------------------------------------------------------------------
@@ -28,43 +34,26 @@ float Position_KD =5;
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void Motor_Init(void){
-
     pwm_init(PWM_CH, 1000, 0);                                                 // PWM 通道1 初始化频率1KHz 占空比初始为0
     gpio_init(DIR_CH, GPO, GPIO_HIGH, GPO_PUSH_PULL);                          // 初始化电机方向输出引脚
-    encoder_dir_init(ENCODER_TIM, ENCODER_PLUS, ENCODER_DIR);                // 初始化编码器采值引脚及定时器
+
+    encoder_dir_init(ENCODER_TIM, ENCODER_PLUS, ENCODER_DIR);                  // 初始化编码器采值引脚及定时器
+
+    pwm_init(SERVO_MOTOR_PWM, SERVO_MOTOR_FREQ, 0);                            // 舵机PWM初始化
+    pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(100.0));            // 舵机回正
 }
-
-
-//----------------------------------------------------------------------------------------------------------------
-// 函数简介     电机PID控制
-// 参数说明     Encoder            编码器数值
-// 参数说明     Target             目标数值
-// 返回参数     duty
-// 使用示例     Motor_PID(float Encoder,float Target);
-// 备注信息
-//----------------------------------------------------------------------------------------------------------------
-int Motor_PID(int Encoder,int Target){
-
-        static int duty,Bias,Integral_bias,Last_Bias;
-        Bias=Target - Encoder;
-        Integral_bias+=Bias;
-        duty=Position_KP*Bias+Position_KD*(Bias-Last_Bias);
-        Last_Bias=Bias;
-        return duty;
- }
 
 
 //----------------------------------------------------------------------------------------------------------------
 // 函数简介     读取编码器数值
 // 参数说明     encoder            编码器数值
-// 返回参数     encoder
+// 返回参数     void
 // 使用示例     Encoder_Get();
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
-int16 Encoder_Get(void){
-    encoder = encoder_get_count(ENCODER_TIM);                               // 采集对应编码器数据
+void Encoder_Get(void){
+    Encoder = encoder_get_count(ENCODER_TIM);                               // 采集对应编码器数据
     encoder_clear_count(ENCODER_TIM);                                          // 清除对应计数
-    return  encoder;
 }
 
 
@@ -77,11 +66,27 @@ int16 Encoder_Get(void){
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void Motor_Control(void){
-    Motor_Duty=Motor_PID(Encoder_Get(),Speed_Target);
 
-    pwm_set_duty(PWM_CH, Motor_Duty * (PWM_DUTY_MAX / 100));                     // 计算占空比
     gpio_set_level(DIR_CH, 0);
+
+    if(Speed_Duty<=0)
+       Speed_Duty=0;
+    else
+        if(Speed_Duty>=MAX_DUTY)
+            Speed_Duty=MAX_DUTY;                                                 // 限值Speed_Duty
+
+    pwm_set_duty(PWM_CH, Speed_Duty * (PWM_DUTY_MAX / 100));                     // 计算占空比
 }
 
 
+//----------------------------------------------------------------------------------------------------------------
+// 函数简介     舵机控制
+// 参数说明
+// 返回参数
+// 使用示例     Servo_Motor_Control();
+// 备注信息
+//----------------------------------------------------------------------------------------------------------------
+void Servo_Motor_Control(void){
 
+
+}

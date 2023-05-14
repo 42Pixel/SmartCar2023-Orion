@@ -4,15 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../code/Key.c \
 ../code/Motor.c 
 
 COMPILED_SRCS += \
+./code/Key.src \
 ./code/Motor.src 
 
 C_DEPS += \
+./code/Key.d \
 ./code/Motor.d 
 
 OBJS += \
+./code/Key.o \
 ./code/Motor.o 
 
 
@@ -36,7 +40,7 @@ code/%.o: ./code/%.src code/subdir.mk
 clean: clean-code
 
 clean-code:
-	-$(RM) ./code/Motor.d ./code/Motor.o ./code/Motor.src
+	-$(RM) ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src
 
 .PHONY: clean-code
 

@@ -220,8 +220,7 @@ static void utc_to_btc (gps_time_struct *time)
 //-------------------------------------------------------------------------------------------------------------------
 static uint8 gps_gnrmc_parse (char *line, gps_info_struct *gps)
 {
-    uint8 state, temp;
-
+    uint8 state,temp;
     double  latitude;                                                           // Î³¶È
     double  longitude;                                                          // ¾­¶È
 

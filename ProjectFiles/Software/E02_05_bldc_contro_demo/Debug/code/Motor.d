@@ -306,3 +306,7 @@ code/Motor.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_dev
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_wireless_uart.h :
 code/Motor.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Motor.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Motor.h :
+code/Motor.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h :
+code/Motor.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h :

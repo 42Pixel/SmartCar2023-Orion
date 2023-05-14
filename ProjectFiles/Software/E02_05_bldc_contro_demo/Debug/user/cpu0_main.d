@@ -306,5 +306,7 @@ user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Motor.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Motor.h :
 user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h :
+user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h :
 user/cpu0_main.o :	../user/isr_config.h
 ../user/isr_config.h :
