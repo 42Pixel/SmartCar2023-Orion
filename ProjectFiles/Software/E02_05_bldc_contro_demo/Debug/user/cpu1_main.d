@@ -308,3 +308,5 @@ user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h :
 user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h :
+user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h :

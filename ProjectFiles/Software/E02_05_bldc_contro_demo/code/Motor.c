@@ -20,10 +20,12 @@
     #error "SERVO_MOTOR_FREQ ERROE!"
 #endif
 
-float servo_motor_duty = 100.0;                                               // 舵机动作角度                                                    // 舵机动作状态
+float s_pid_KP=0.0;
+float s_pid_KD=0.0;
 
 int8 Speed_Duty=20;                                                           // 速度设定值
 int16 Encoder;                                                                // 编码器计数
+
 
 
 //----------------------------------------------------------------------------------------------------------------
@@ -52,21 +54,20 @@ void Motor_Init(void){
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void Encoder_Get(void){
-    Encoder = encoder_get_count(ENCODER_TIM);                               // 采集对应编码器数据
+    Encoder = encoder_get_count(ENCODER_TIM);                                  // 采集对应编码器数据
     encoder_clear_count(ENCODER_TIM);                                          // 清除对应计数
 }
 
 
 //----------------------------------------------------------------------------------------------------------------
 // 函数简介     电机控制
-// 参数说明     Encoder            编码器数值
-// 参数说明     Target             目标数值
-// 返回参数     duty
-// 使用示例     Motor_PID(float Encoder,float Target);
+// 参数说明
+// 参数说明
+// 返回参数
+// 使用示例     内部调用
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void Motor_Control(void){
-
     gpio_set_level(DIR_CH, 0);
 
     if(Speed_Duty<=0)
@@ -80,6 +81,30 @@ void Motor_Control(void){
 
 
 //----------------------------------------------------------------------------------------------------------------
+// 函数简介     舵机PID
+// 参数说明
+// 输入参数     set                    目标值
+// 输入参数     NowPoint               当前值
+// 返回参数     output                 PD输出值
+// 使用示例     内部调用
+// 备注信息
+//----------------------------------------------------------------------------------------------------------------
+int8 PID_Servo_Contrl(float SetPoint,float NowPoint){
+    float iError;                                                         //iError:误差
+    float LastError;
+    float PrevError;
+    float output;                                   // LastError:上次误差  PrevError上上次误差
+    iError = SetPoint - NowPoint;                                       //当前误差  设定的目标值和实际值的偏差
+    output = s_pid_KP * iError+ s_pid_KD * (iError - LastError);        //增量计算
+
+    /*存储误差  用于下次计算*/
+    PrevError = LastError;
+    LastError = iError;
+    return (int)output;                                                      //返回位置值
+}
+
+
+//----------------------------------------------------------------------------------------------------------------
 // 函数简介     舵机控制
 // 参数说明
 // 返回参数
@@ -87,6 +112,8 @@ void Motor_Control(void){
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void Servo_Motor_Control(void){
-
-
+    float servo_duty;                                                    // 舵机动作角度
+    servo_duty=100+PID_Servo_Contrl(100,101);
+    pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(servo_duty));
 }
+

@@ -312,3 +312,5 @@ user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_commo
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h :
 user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h :
+user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h :

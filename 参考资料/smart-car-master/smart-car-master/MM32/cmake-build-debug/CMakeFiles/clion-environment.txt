@@ -1,4 +1,0 @@
-ToolSet: w64 9.0 (local)@D:\CLion\bin\mingw
-Options: 
-
-Options:

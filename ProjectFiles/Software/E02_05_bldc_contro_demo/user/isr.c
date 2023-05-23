@@ -52,11 +52,12 @@ IFX_INTERRUPT(cc60_pit_ch0_isr, 0, CCU6_0_CH0_ISR_PRIORITY)
 
 IFX_INTERRUPT(cc60_pit_ch1_isr, 0, CCU6_0_CH1_ISR_PRIORITY)
 {
-    interrupt_global_enable(0);                     // ¿ªÆôÖÐ¶ÏÇ¶Ì×
+    interrupt_global_enable(0);                                                 // ¿ªÆôÖÐ¶ÏÇ¶Ì×
     pit_clear_flag(CCU60_CH1);
 
-    Motor_Control();
     Encoder_Get();
+    Motor_Control();
+    Servo_Motor_Control();
 
 
 }
