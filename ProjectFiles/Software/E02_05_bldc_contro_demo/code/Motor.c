@@ -20,7 +20,7 @@
     #error "SERVO_MOTOR_FREQ ERROE!"
 #endif
 
-float s_pid_KP=0.0;
+float s_pid_KP=0.0;                                                           //舵机PD参数
 float s_pid_KD=0.0;
 
 int8 Speed_Duty=20;                                                           // 速度设定值
@@ -90,17 +90,15 @@ void Motor_Control(void){
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 int8 PID_Servo_Contrl(float SetPoint,float NowPoint){
-    float iError;                                                         //iError:误差
-    float LastError;
-    float PrevError;
-    float output;                                   // LastError:上次误差  PrevError上上次误差
+    static float iError,LastError,PrevError;                            //iError:误差,LastError:上次误差，上上次误差
+    float output;                                                       //输出
     iError = SetPoint - NowPoint;                                       //当前误差  设定的目标值和实际值的偏差
     output = s_pid_KP * iError+ s_pid_KD * (iError - LastError);        //增量计算
 
     /*存储误差  用于下次计算*/
     PrevError = LastError;
     LastError = iError;
-    return (int)output;                                                      //返回位置值
+    return (int)output;                                                 //返回位置值
 }
 
 
@@ -113,7 +111,7 @@ int8 PID_Servo_Contrl(float SetPoint,float NowPoint){
 //----------------------------------------------------------------------------------------------------------------
 void Servo_Motor_Control(void){
     float servo_duty;                                                    // 舵机动作角度
-    servo_duty=100+PID_Servo_Contrl(100,101);
-    pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(servo_duty));
+    servo_duty=100+PID_Servo_Contrl(100,101);                            // PD控制
+    pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(servo_duty)); // 设置舵机PWM
 }
 
