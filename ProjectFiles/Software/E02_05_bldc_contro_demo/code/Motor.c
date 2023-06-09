@@ -23,7 +23,7 @@
 float s_pid_KP=0.0;                                                           //舵机PD参数
 float s_pid_KD=0.0;
 
-int8 Speed_Duty=20;                                                           // 速度设定值
+int8 Speed_Duty;                                                           // 速度设定值
 int16 Encoder;                                                                // 编码器计数
 
 

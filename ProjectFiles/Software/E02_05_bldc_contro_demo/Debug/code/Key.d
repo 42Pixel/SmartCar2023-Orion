@@ -282,8 +282,6 @@ code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_devic
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips114.h :
 code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips200.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips200.h :
-code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_key.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_key.h :
 code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mpu6050.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mpu6050.h :
 code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mt9v03x.h

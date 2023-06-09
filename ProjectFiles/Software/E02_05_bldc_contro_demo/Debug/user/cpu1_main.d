@@ -280,8 +280,6 @@ user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips114.h :
 user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips200.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_ips200.h :
-user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_key.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_key.h :
 user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mpu6050.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mpu6050.h :
 user/cpu1_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_device/zf_device_mt9v03x.h
