@@ -1,5 +1,5 @@
-#ifndef CODE_MOTOR_H_
-#define CODE_MOTOR_H_
+#ifndef _MOTOR_H_
+#define _MOTOR_H_
 
 #include "zf_common_headfile.h"
 
@@ -12,4 +12,4 @@ extern void Motor_Init(void);
 extern void Motor_Control(void);
 
 
-#endif /* CODE_MOTOR_H_ */
+#endif

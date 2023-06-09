@@ -1,8 +1,7 @@
-#ifndef CODE_IMU_H_
-#define CODE_IMU_H_
+#ifndef _IMU_H_
+#define _IMU_H_
 
+#include "zf_common_headfile.h"
 
+#endif
 
-
-
-#endif /* CODE_IMU_H_ */

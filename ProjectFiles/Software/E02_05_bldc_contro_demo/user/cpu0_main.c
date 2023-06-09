@@ -75,7 +75,7 @@ int core0_main(void){
         ips200_draw_line    (0,16*10,239,16*10,RGB565_WHITE);
 
         ips200_show_string  (0,     16*11,  "Gyro_Z");
-	    ips200_show_int     (120,   16*11,  imu963ra_gyro_z,             5);
+//	    ips200_show_int     (120,   16*11,  imu963ra_gyro_z,             5);
         ips200_show_string  (0,     16*12,  "Mag_Z");
         ips200_show_int     (120,   16*12,  imu963ra_mag_z,              5);
 

@@ -1,7 +1,7 @@
-#include "zf_common_headfile.h"
+#ifndef _KEY_H_
+#define _KEY_H_
 
-#ifndef KEY_H_
-#define KEY_H_
+#include "zf_common_headfile.h"
 
 enum Keycode{
     Key1,
