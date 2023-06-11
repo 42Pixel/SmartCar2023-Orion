@@ -1,43 +1,30 @@
 # Fastest Car
-## 任务时间
-**2023.3.26----2023.7.25**
+## 里程碑
+:white_check_mark:**按键**(2023-6-9)
+```c
+enum Keycode{
+    Key1,
+    Key2,
+    Key3,
+    Key4
+};
 
-<!-- ## 甘特图
+extern void Key_Init(void);
+extern void Scan_Key(void);
+```
 
-~~~mermaid
-gantt
-    title Fastest Car
-    dateFormat 2023.3.25
-    
-    section 初期任务
-    硬件搭建及测试:       done,des1, 2023-03-25, 11d
-    无刷电机闭环控制:   active,des2, after des1, 5d
-    姿态传感器解算:            des3, after des2, 5d
-    GPS定位:                  des4, after des3, 3d
-    转向舵机闭环控制:          des5, after des4, 2d
-    GPS寻直线实现:             des6, after des5, 2d
- 
-    section 中期任务
-    GPS循迹测试 :             d1, 2023-04-22, 3d
-    GPS绕锥桶&S形:            d2, after d1,   5d
+:heavy_exclamation_mark:**Kalman_Filter**(2023-6-10)
+```c
+float KalmanFilter(Kalman *kfp,float input){
 
-    section 紧急任务(动态更新)
-    无刷电机闭环控制:               crit,c1, 2023-04-09, 5d
-    
-   ~~~ -->
-
-
-
-
-## 任务分配&细节 
-**硬件搭建及测试**
-- [x] 控制板，驱动板安装，信号线连接
-- [x] 转接板固定
-- [ ] PCB绘制及制作
-- [x] DEMO下载，硬件测试
-
-**无刷电机闭环控制:**
-
+   kfp->Now_P = kfp->Last_P + kfp->Q;                       //预测协方差方程：k时刻系统估算协方差 = k-1时刻的系统协方差 + 过程噪声协方差
+   kfp->Kg = kfp->Now_P / (kfp->Now_P + kfp->R);            //卡尔曼增益方程：卡尔曼增益 = k时刻系统估算协方差 / （k时刻系统估算协方差 + 观测噪声协方差）
+   kfp->out = kfp->out + kfp->Kg * (input -kfp->out);       //更新最优值方程：k时刻状态变量的最优值 = 状态变量的预测值 + 卡尔曼增益 * （测量值 - 状态变量的预测值）
+                                                            //因为这一次的预测值就是上一次的输出值
+   kfp->Last_P = (1-kfp->Kg) * kfp->Now_P;                  //更新协方差方程: 本次的系统协方差付给 kfp->LastP 威下一次运算准备。
+   return kfp->out;
+}
+```
 
 ## 参考资料
 [第十八届全国大学生智能车竞赛竞速比赛规则](https://blog.csdn.net/zhuoqingjoking97298/article/details/127817742)
