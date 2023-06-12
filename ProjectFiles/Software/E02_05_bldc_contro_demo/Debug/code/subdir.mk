@@ -7,25 +7,33 @@ C_SRCS += \
 ../code/Filter.c \
 ../code/IMU.c \
 ../code/Key.c \
-../code/Motor.c 
+../code/Motor.c \
+../code/Printf.c \
+../code/VOFA.c 
 
 COMPILED_SRCS += \
 ./code/Filter.src \
 ./code/IMU.src \
 ./code/Key.src \
-./code/Motor.src 
+./code/Motor.src \
+./code/Printf.src \
+./code/VOFA.src 
 
 C_DEPS += \
 ./code/Filter.d \
 ./code/IMU.d \
 ./code/Key.d \
-./code/Motor.d 
+./code/Motor.d \
+./code/Printf.d \
+./code/VOFA.d 
 
 OBJS += \
 ./code/Filter.o \
 ./code/IMU.o \
 ./code/Key.o \
-./code/Motor.o 
+./code/Motor.o \
+./code/Printf.o \
+./code/VOFA.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -48,7 +56,7 @@ code/%.o: ./code/%.src code/subdir.mk
 clean: clean-code
 
 clean-code:
-	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/IMU.d ./code/IMU.o ./code/IMU.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src
+	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/IMU.d ./code/IMU.o ./code/IMU.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/Printf.d ./code/Printf.o ./code/Printf.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src
 
 .PHONY: clean-code
 

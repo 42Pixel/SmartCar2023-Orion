@@ -22,15 +22,6 @@ int core0_main(void){
     gps_init();
     Key_Init();
 
-    ips200_set_dir(IPS200_PORTAIT);
-    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
-    ips200_init(IPS200_TYPE);
-
-    pit_ms_init(CCU60_CH0, 2);      //IMU中断间隔 毫秒
-    pit_ms_init(CCU60_CH1, 5);      //电机中断间隔 毫秒
-
-	cpu_wait_event_ready();         // 等待所有核心初始化完毕
-
 	while(1){
         if(imu963ra_init()){
             ips200_show_string(0,16*0,"IMU_Init_Erro");                                  // IMU963RA 初始化失败
@@ -39,6 +30,27 @@ int core0_main(void){
            break;
         }
     }
+
+    ips200_set_dir(IPS200_PORTAIT);
+    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
+    ips200_init(IPS200_TYPE);
+
+	pit_ms_init(CCU60_CH0, 2);      //IMU中断间隔 毫秒
+	pit_ms_init(CCU60_CH1, 5);      //电机中断间隔 毫秒
+
+	uart_init(UART_2,9600,UART2_TX_P10_5,UART2_RX_P10_6);
+	cpu_wait_event_ready();        // 等待所有核心初始化完毕
+
+	  //VOFA+
+	    VOFA* VOFA_pt = vofa_create();          //创建VOFA对象
+	    vofa_init(VOFA_pt
+	      ,                                     //初始化当前的vofa对象
+	              vofa_ch_data,ch_sz,
+	              vofa_image,image_sz,
+	              custom_buf,custom_sz,
+	              cmd_rxbuf,cmd_sz,
+	              UART_2,UART_2,UART_2);
+
 
 	while (TRUE)
 //******************************************************** 注意 ***********************************************************************
@@ -75,9 +87,10 @@ int core0_main(void){
         ips200_draw_line    (0,16*10,239,16*10,RGB565_WHITE);
 
         ips200_show_string  (0,     16*11,  "Gyro_Z");
-//	    ips200_show_int     (120,   16*11,  imu963ra_gyro_z,             5);
+        ips200_show_int     (120,   16*11,IMU_G,              5);
         ips200_show_string  (0,     16*12,  "Mag_Z");
-        ips200_show_int     (120,   16*12,  imu963ra_mag_z,              5);
+        ips200_show_int     (120,   16*12,IMU_M,              5);
+
 
 
 	}
