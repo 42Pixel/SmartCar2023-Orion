@@ -1,6 +1,6 @@
 # Fastest Car
 ## 里程碑
-:white_check_mark:**按键**(2023-6-9)
+:white_check_mark:**按一下，再按一下 [按键]**(2023-6-9)
 ```c
 enum Keycode{
     Key1,
@@ -13,7 +13,7 @@ extern void Key_Init(void);
 extern void Scan_Key(void);
 ```
 
-:white_check_mark:**Kalman_Filter**(2023-6-12)
+:white_check_mark:**稳住，别浪 [Kalman_Filter]**(2023-6-12)
 ```c
 float KalmanFilter(Kalman *kfp,float input){
 
@@ -25,11 +25,17 @@ float KalmanFilter(Kalman *kfp,float input){
    return kfp->out;
 }
 ```
-:heavy_exclamation_mark:**VOFA+**
+:white_check_mark:**VOFA+原名伏特加，于2018年10月启动，代码配酒，bug没有 [VOFA+]**(2023-6-14)
+```c
+// VOFA+
+	VOFA* VOFA_pt = vofa_create();       //创建VOFA对象
+	vofa_init(VOFA_pt,                   //初始化当前的vofa对象
+	    vofa_ch_data,ch_sz,
+	    custom_buf,custom_sz,
+	    cmd_rxbuf,cmd_sz,
+	    UART_2,UART_2,UART_2);
 ```
-…………
-```
-
+:heavy_exclamation_mark:**找准方向[IMU]**
 
 ## 参考资料
 [第十八届全国大学生智能车竞赛竞速比赛规则](https://blog.csdn.net/zhuoqingjoking97298/article/details/127817742)

@@ -312,11 +312,7 @@ user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h :
-user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA_imageformat.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA_imageformat.h :
 user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h :
-user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Printf.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Printf.h :
 user/cpu0_main.o :	../user/isr_config.h
 ../user/isr_config.h :

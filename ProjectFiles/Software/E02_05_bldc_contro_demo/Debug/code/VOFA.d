@@ -314,9 +314,5 @@ code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h :
-code/VOFA.o :	../code/VOFA_imageformat.h
-../code/VOFA_imageformat.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h :
-code/VOFA.o :	../code/Printf.h
-../code/Printf.h :

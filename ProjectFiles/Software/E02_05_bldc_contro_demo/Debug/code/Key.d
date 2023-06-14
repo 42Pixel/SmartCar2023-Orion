@@ -314,9 +314,5 @@ code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h :
-code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA_imageformat.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA_imageformat.h :
 code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h :
-code/Key.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Printf.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Printf.h :

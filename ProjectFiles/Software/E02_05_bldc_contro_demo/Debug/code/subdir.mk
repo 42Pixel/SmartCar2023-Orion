@@ -8,7 +8,6 @@ C_SRCS += \
 ../code/IMU.c \
 ../code/Key.c \
 ../code/Motor.c \
-../code/Printf.c \
 ../code/VOFA.c 
 
 COMPILED_SRCS += \
@@ -16,7 +15,6 @@ COMPILED_SRCS += \
 ./code/IMU.src \
 ./code/Key.src \
 ./code/Motor.src \
-./code/Printf.src \
 ./code/VOFA.src 
 
 C_DEPS += \
@@ -24,7 +22,6 @@ C_DEPS += \
 ./code/IMU.d \
 ./code/Key.d \
 ./code/Motor.d \
-./code/Printf.d \
 ./code/VOFA.d 
 
 OBJS += \
@@ -32,7 +29,6 @@ OBJS += \
 ./code/IMU.o \
 ./code/Key.o \
 ./code/Motor.o \
-./code/Printf.o \
 ./code/VOFA.o 
 
 
@@ -56,7 +52,7 @@ code/%.o: ./code/%.src code/subdir.mk
 clean: clean-code
 
 clean-code:
-	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/IMU.d ./code/IMU.o ./code/IMU.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/Printf.d ./code/Printf.o ./code/Printf.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src
+	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/IMU.d ./code/IMU.o ./code/IMU.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src
 
 .PHONY: clean-code
 

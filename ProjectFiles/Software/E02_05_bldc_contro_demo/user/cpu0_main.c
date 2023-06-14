@@ -35,22 +35,19 @@ int core0_main(void){
     ips200_set_color(RGB565_WHITE, RGB565_BLACK);
     ips200_init(IPS200_TYPE);
 
-	pit_ms_init(CCU60_CH0, 2);      //IMU中断间隔 毫秒
-	pit_ms_init(CCU60_CH1, 5);      //电机中断间隔 毫秒
+	pit_ms_init(CCU60_CH0, 5);      //IMU中断间隔 毫秒
+	pit_ms_init(CCU60_CH1, 2);      //电机中断间隔 毫秒
 
-	uart_init(UART_2,9600,UART2_TX_P10_5,UART2_RX_P10_6);
+	uart_init(UART_2,115200,UART2_TX_P10_5,UART2_RX_P10_6);
 	cpu_wait_event_ready();        // 等待所有核心初始化完毕
 
-	  //VOFA+
-	    VOFA* VOFA_pt = vofa_create();          //创建VOFA对象
-	    vofa_init(VOFA_pt
-	      ,                                     //初始化当前的vofa对象
-	              vofa_ch_data,ch_sz,
-	              vofa_image,image_sz,
-	              custom_buf,custom_sz,
-	              cmd_rxbuf,cmd_sz,
-	              UART_2,UART_2,UART_2);
-
+	    // VOFA+
+	        VOFA* VOFA_pt = vofa_create();       //创建VOFA对象
+	        vofa_init(VOFA_pt,                   //初始化当前的vofa对象
+	                    vofa_ch_data,ch_sz,
+	           custom_buf,custom_sz,
+	           cmd_rxbuf,cmd_sz,
+	           UART_2,UART_2,UART_2);
 
 	while (TRUE)
 //******************************************************** 注意 ***********************************************************************
@@ -91,6 +88,7 @@ int core0_main(void){
         ips200_show_string  (0,     16*12,  "Mag_Z");
         ips200_show_int     (120,   16*12,IMU_M,              5);
 
+        VOFA_Sent();
 
 
 	}

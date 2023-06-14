@@ -38,5 +38,5 @@ float KalmanFilter(KFP *kfp,float input){
 ********************************************************************************************************************************/
 void IMU_Filter(void){
     IMU_G=KalmanFilter(&KFP_IMU_G,(float)imu963ra_gyro_z);
-    IMU_M=KalmanFilter(&KFP_IMU_M,(float)imu963ra_mag_z);
+//    IMU_M=KalmanFilter(&KFP_IMU_M,(float)imu963ra_mag_z);
 }
