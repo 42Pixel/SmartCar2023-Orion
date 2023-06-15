@@ -18,6 +18,8 @@ code/VOFA.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/C
 d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/stdbool.h :
 code/VOFA.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h
 d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h :
+code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/INS.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/INS.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/ifxAsclin_reg.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/ifxAsclin_reg.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/IfxAsclin_regdef.h
@@ -308,11 +310,13 @@ code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_comm
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_common/zf_common_headfile.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Key.h :
-code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/IMU.h :
-code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h :
+code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Fast_Math.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Fast_Math.h :
+code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
+code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h :
 code/VOFA.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h :

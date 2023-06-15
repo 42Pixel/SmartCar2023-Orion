@@ -22,7 +22,11 @@ int core0_main(void){
     gps_init();
     Key_Init();
 
-	while(1){
+    ips200_set_dir(IPS200_PORTAIT);
+    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
+    ips200_init(IPS200_TYPE);
+
+    while(1){
         if(imu963ra_init()){
             ips200_show_string(0,16*0,"IMU_Init_Erro");                                  // IMU963RA 初始化失败
         }
@@ -30,15 +34,16 @@ int core0_main(void){
            break;
         }
     }
+//    icmOffsetInit();
+    gyroOffset_init();
 
-    ips200_set_dir(IPS200_PORTAIT);
-    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
-    ips200_init(IPS200_TYPE);
+    system_delay_ms(750);           //等待所有硬件初始化完毕
 
-	pit_ms_init(CCU60_CH0, 5);      //IMU中断间隔 毫秒
+    pit_ms_init(CCU60_CH0, 5);      //IMU中断间隔 毫秒
 	pit_ms_init(CCU60_CH1, 2);      //电机中断间隔 毫秒
 
 	uart_init(UART_2,115200,UART2_TX_P10_5,UART2_RX_P10_6);
+
 	cpu_wait_event_ready();        // 等待所有核心初始化完毕
 
 	    // VOFA+
@@ -63,6 +68,7 @@ int core0_main(void){
 	      }
 
 	    Scan_Key();
+	    VOFA_Sent();
 
 	    ips200_show_string  (0,     16*0,   "Encoder");
 	    ips200_show_int     (120,   16*0,   Encoder,            6);
@@ -84,13 +90,9 @@ int core0_main(void){
         ips200_draw_line    (0,16*10,239,16*10,RGB565_WHITE);
 
         ips200_show_string  (0,     16*11,  "Gyro_Z");
-        ips200_show_int     (120,   16*11,IMU_G,              5);
-        ips200_show_string  (0,     16*12,  "Mag_Z");
-        ips200_show_int     (120,   16*12,IMU_M,              5);
-
-        VOFA_Sent();
 
 
+        ips200_show_float   (120,   16*15,   eulerAngle.yaw,4,     6);
 	}
 }
 //********************************************************主函数***********************************************************************

@@ -2,7 +2,8 @@
 
 int IMU_G=0;
 int IMU_M=0;
-
+float cpm_k = 0.85;             //二阶滤波系数
+float cpm_angle;                //二阶互补滤波滤波值
 KFP KFP_IMU_G={0.02,0,0,0,0.001,0.543};
 KFP KFP_IMU_M={0.02,0,0,0,0.001,0.543};
 
@@ -26,6 +27,65 @@ float KalmanFilter(KFP *kfp,float input){
      kfp->LastP = (1-kfp->Kg) * kfp->Now_P;
      return kfp->out;
  }
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      低通滤波
+//  @param      待滤波的值
+//  @return     滤波值
+//  Sample usage:
+//-------------------------------------------------------------------------------------------------------------------
+float RCFilter(float value,RC_Filter_pt Filter)
+{
+    Filter->temp = value;
+    Filter->value = (1 - Filter->RC) * Filter->value + Filter->RC * Filter->temp;
+//  temp = RC * value + (1 - RC) * temp;
+    return Filter->value;
+}
+
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      二阶互补滤波 | yaw角
+//  @param      now_angle            应该由加速度计得到angle，再使用陀螺仪进行补偿，但是加速度计得不到yaw角，可能还是得使用磁力计
+//  @param      now_rate             陀螺仪得到的角速度
+//  @param      dt                   采样时间
+//  @return     cpm_angle            滤波值
+//  Sample usage:
+//-------------------------------------------------------------------------------------------------------------------
+float complementary_filter2(float now_angle, float now_rate, float dt)
+{
+    float y1=0,x1,x2;
+    x1 = (now_angle - cpm_angle) * cpm_k * cpm_k;
+    y1 = y1 + x1 * dt;
+    x2 = y1 + 2 * cpm_k *(now_angle - cpm_angle) + now_rate;
+    cpm_angle = cpm_angle + x2 * dt;
+    return cpm_angle;
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      输入一个值弹出一个值，所有值取平均 | 滑动滤波
+//  @param      待滤波的值
+//  @return
+//  Sample usage:
+//-------------------------------------------------------------------------------------------------------------------
+
+float Movingaverage_filter(float value,float Filter_buff[])
+{
+    int8_t i = 0;//遍历
+    float temp = value;
+    float Filter_sum = 0;
+    Filter_buff[Filter_N] = temp;
+
+    for(i = 0; i < Filter_N; i++)
+    {
+        Filter_buff[i] = Filter_buff[i+1];      //数据左移
+        Filter_sum += Filter_buff[i];
+    }
+    temp = Filter_sum / Filter_N;
+    return temp;
+}
 
 
 /*******************************************************************************************************************************
