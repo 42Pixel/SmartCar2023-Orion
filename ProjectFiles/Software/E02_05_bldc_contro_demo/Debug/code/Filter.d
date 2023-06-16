@@ -18,8 +18,6 @@ code/Filter.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools
 d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/stdbool.h :
 code/Filter.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h
 d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h :
-code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/INS.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/INS.h :
 code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/ifxAsclin_reg.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/ifxAsclin_reg.h :
 code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/infineon_libraries/Infra/Sfr/TC26B/_Reg/IfxAsclin_regdef.h
@@ -314,8 +312,6 @@ code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/VOFA.h :
 code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/libraries/zf_driver/zf_driver_uart.h :
-code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Fast_Math.h
-e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Fast_Math.h :
 code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 code/Filter.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h

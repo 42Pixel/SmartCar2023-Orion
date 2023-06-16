@@ -34,12 +34,12 @@ int core0_main(void){
            break;
         }
     }
-//    icmOffsetInit();
+
     gyroOffset_init();
 
     system_delay_ms(750);           //等待所有硬件初始化完毕
 
-    pit_ms_init(CCU60_CH0, 5);      //IMU中断间隔 毫秒
+    pit_ms_init(CCU60_CH0, 10);      //IMU中断间隔 毫秒
 	pit_ms_init(CCU60_CH1, 2);      //电机中断间隔 毫秒
 
 	uart_init(UART_2,115200,UART2_TX_P10_5,UART2_RX_P10_6);
@@ -92,7 +92,9 @@ int core0_main(void){
         ips200_show_string  (0,     16*11,  "Gyro_Z");
 
 
-        ips200_show_float   (120,   16*15,   eulerAngle.yaw,4,     6);
+        ips200_show_float   (120,   16*14,   eulerAngle.pitch,4,     6);
+        ips200_show_float   (120,   16*15,   eulerAngle.roll,4,     6);
+        ips200_show_float   (120,   16*16,   eulerAngle.yaw,4,     6);
 	}
 }
 //********************************************************主函数***********************************************************************

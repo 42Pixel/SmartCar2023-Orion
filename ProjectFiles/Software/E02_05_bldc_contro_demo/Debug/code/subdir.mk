@@ -4,40 +4,28 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../code/Fast_Math.c \
 ../code/Filter.c \
-../code/ICM.c \
-../code/INS.c \
 ../code/Key.c \
 ../code/Motor.c \
 ../code/VOFA.c \
 ../code/attitude_solution.c 
 
 COMPILED_SRCS += \
-./code/Fast_Math.src \
 ./code/Filter.src \
-./code/ICM.src \
-./code/INS.src \
 ./code/Key.src \
 ./code/Motor.src \
 ./code/VOFA.src \
 ./code/attitude_solution.src 
 
 C_DEPS += \
-./code/Fast_Math.d \
 ./code/Filter.d \
-./code/ICM.d \
-./code/INS.d \
 ./code/Key.d \
 ./code/Motor.d \
 ./code/VOFA.d \
 ./code/attitude_solution.d 
 
 OBJS += \
-./code/Fast_Math.o \
 ./code/Filter.o \
-./code/ICM.o \
-./code/INS.o \
 ./code/Key.o \
 ./code/Motor.o \
 ./code/VOFA.o \
@@ -64,7 +52,7 @@ code/%.o: ./code/%.src code/subdir.mk
 clean: clean-code
 
 clean-code:
-	-$(RM) ./code/Fast_Math.d ./code/Fast_Math.o ./code/Fast_Math.src ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/ICM.d ./code/ICM.o ./code/ICM.src ./code/INS.d ./code/INS.o ./code/INS.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src ./code/attitude_solution.d ./code/attitude_solution.o ./code/attitude_solution.src
+	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src ./code/attitude_solution.d ./code/attitude_solution.o ./code/attitude_solution.src
 
 .PHONY: clean-code
 
