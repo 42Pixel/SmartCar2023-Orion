@@ -40,7 +40,7 @@ int core0_main(void){
     system_delay_ms(750);           //等待所有硬件初始化完毕
 
     pit_ms_init(CCU60_CH0, 10);      //IMU中断间隔 毫秒
-	pit_ms_init(CCU60_CH1, 2);      //电机中断间隔 毫秒
+	pit_ms_init(CCU60_CH1, 7);      //电机中断间隔 毫秒
 
 	uart_init(UART_2,115200,UART2_TX_P10_5,UART2_RX_P10_6);
 
@@ -64,37 +64,12 @@ int core0_main(void){
 
 	    if(gps_tau1201_flag){
 	        gps_tau1201_flag = 0;
-	        gps_data_parse();           //开始解析数据
+	        gps_data_parse();           // 开始解析数据
 	      }
 
-	    Scan_Key();
-	    VOFA_Sent();
-
-	    ips200_show_string  (0,     16*0,   "Encoder");
-	    ips200_show_int     (120,   16*0,   Encoder,            6);
-	    ips200_show_string  (0,     16*1,   "Speed");
-	    ips200_show_int     (120,   16*1,   Speed_Duty,         6);
-
-	    ips200_draw_line    (0,16*3,239,16*3,RGB565_WHITE);
-
-	    ips200_show_string  (0,     16*4,   "state");
-        ips200_show_uint    (120,   16*4,   gps_tau1201.state,    5);
-        ips200_show_string  (0,     16*5,   "latitude");
-	    ips200_show_float   (120,   16*5,   gps_tau1201.latitude, 4,     6);
-	    ips200_show_string  (0,     16*6,   "longitude");
-	    ips200_show_float   (120,   16*6,   gps_tau1201.longitude,4,     6);
-	    ips200_show_string  (0,     16*7,   "direction");
-	    ips200_show_float   (120,   16*7,   gps_tau1201.direction,4,     6);
-	    ips200_show_string  (0,     16*8,   "satellite_used");
-	    ips200_show_uint    (120,   16*8,   gps_tau1201.satellite_used,  5);
-        ips200_draw_line    (0,16*10,239,16*10,RGB565_WHITE);
-
-        ips200_show_string  (0,     16*11,  "Gyro_Z");
-
-
-        ips200_show_float   (120,   16*14,   eulerAngle.pitch,4,     6);
-        ips200_show_float   (120,   16*15,   eulerAngle.roll,4,     6);
-        ips200_show_float   (120,   16*16,   eulerAngle.yaw,4,     6);
+	    Scan_Key();                     // 按键扫描
+	    VOFA_Sent();                    // 数据发送
+	    UI_Page1();                     // 参数显示
 	}
 }
 //********************************************************主函数***********************************************************************

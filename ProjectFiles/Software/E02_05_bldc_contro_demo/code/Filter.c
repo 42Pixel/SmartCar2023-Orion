@@ -1,7 +1,7 @@
 # include "Filter.h"
 
-int IMU_G=0;
-int IMU_M=0;
+int IMU_G_X=0, IMU_G_Y=0, IMU_G_Z=0;
+int IMU_A_X=0, IMU_A_Y=0, IMU_A_Z=0;
 float cpm_k = 0.85;             //二阶滤波系数
 float cpm_angle;                //二阶互补滤波滤波值
 KFP KFP_IMU_G={0.02,0,0,0,0.001,0.543};
@@ -39,7 +39,6 @@ float RCFilter(float value,RC_Filter_pt Filter)
 {
     Filter->temp = value;
     Filter->value = (1 - Filter->RC) * Filter->value + Filter->RC * Filter->temp;
-//  temp = RC * value + (1 - RC) * temp;
     return Filter->value;
 }
 
@@ -97,6 +96,11 @@ float Movingaverage_filter(float value,float Filter_buff[])
 // 备注信息     放中断
 ********************************************************************************************************************************/
 void IMU_Filter(void){
-    IMU_G=KalmanFilter(&KFP_IMU_G,(float)imu963ra_gyro_z);
-//    IMU_M=KalmanFilter(&KFP_IMU_M,(float)imu963ra_mag_z);
+    IMU_G_X=KalmanFilter(&KFP_IMU_G,(float)imu963ra_gyro_x);
+    IMU_G_Y=KalmanFilter(&KFP_IMU_G,(float)imu963ra_gyro_y);
+    IMU_G_Z=KalmanFilter(&KFP_IMU_G,(float)imu963ra_gyro_z);
+
+    IMU_A_X=KalmanFilter(&KFP_IMU_M,(float)imu963ra_acc_x);
+    IMU_A_Y=KalmanFilter(&KFP_IMU_M,(float)imu963ra_acc_y);
+    IMU_A_Z=KalmanFilter(&KFP_IMU_M,(float)imu963ra_acc_z);
 }

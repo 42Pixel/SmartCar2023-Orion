@@ -34,7 +34,8 @@ float RCFilter(float value,RC_Filter_pt Filter);
 
 extern float KalmanFilter(KFP *kfp,float input);
 extern void IMU_Filter(void);
-extern int IMU_G,IMU_M;
+extern int IMU_G_X, IMU_G_Y, IMU_G_Z;
+extern int IMU_A_X, IMU_A_Y, IMU_A_Z;
 extern float yaw_Filter;
 
 #endif

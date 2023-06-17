@@ -318,3 +318,5 @@ user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h :
+user/isr.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h :

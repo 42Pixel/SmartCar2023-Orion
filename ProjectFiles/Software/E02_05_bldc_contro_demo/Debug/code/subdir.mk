@@ -7,6 +7,7 @@ C_SRCS += \
 ../code/Filter.c \
 ../code/Key.c \
 ../code/Motor.c \
+../code/UI.c \
 ../code/VOFA.c \
 ../code/attitude_solution.c 
 
@@ -14,6 +15,7 @@ COMPILED_SRCS += \
 ./code/Filter.src \
 ./code/Key.src \
 ./code/Motor.src \
+./code/UI.src \
 ./code/VOFA.src \
 ./code/attitude_solution.src 
 
@@ -21,6 +23,7 @@ C_DEPS += \
 ./code/Filter.d \
 ./code/Key.d \
 ./code/Motor.d \
+./code/UI.d \
 ./code/VOFA.d \
 ./code/attitude_solution.d 
 
@@ -28,6 +31,7 @@ OBJS += \
 ./code/Filter.o \
 ./code/Key.o \
 ./code/Motor.o \
+./code/UI.o \
 ./code/VOFA.o \
 ./code/attitude_solution.o 
 
@@ -52,7 +56,7 @@ code/%.o: ./code/%.src code/subdir.mk
 clean: clean-code
 
 clean-code:
-	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src ./code/attitude_solution.d ./code/attitude_solution.o ./code/attitude_solution.src
+	-$(RM) ./code/Filter.d ./code/Filter.o ./code/Filter.src ./code/Key.d ./code/Key.o ./code/Key.src ./code/Motor.d ./code/Motor.o ./code/Motor.src ./code/UI.d ./code/UI.o ./code/UI.src ./code/VOFA.d ./code/VOFA.o ./code/VOFA.src ./code/attitude_solution.d ./code/attitude_solution.o ./code/attitude_solution.src
 
 .PHONY: clean-code
 

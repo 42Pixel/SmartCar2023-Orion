@@ -80,9 +80,9 @@ void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) 
     float q0q0 = q0 * q0;
     float q0q1 = q0 * q1;
     float q0q2 = q0 * q2;
-    float q0q3 = q0 * q3;
+//    float q0q3 = q0 * q3;
     float q1q1 = q1 * q1;
-    float q1q2 = q1 * q2;
+//    float q1q2 = q1 * q2;
     float q1q3 = q1 * q3;
     float q2q2 = q2 * q2;
     float q2q3 = q2 * q3;
@@ -157,7 +157,7 @@ void ICM_getEulerianAngles(void) {
 
     eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                             // pitch
     eulerAngle.roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2 * q2 + 1)*90-90;              // roll
-    eulerAngle.yaw = atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1) * 90-90;             // yaw
+    eulerAngle.yaw = atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1);             // yaw
 
 /*   ×ËÌ¬ÏÞÖÆ*/
 //    if (eulerAngle.roll > 90 || eulerAngle.roll < -90) {

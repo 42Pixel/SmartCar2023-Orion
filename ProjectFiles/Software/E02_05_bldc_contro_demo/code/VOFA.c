@@ -170,8 +170,7 @@ VOFA_STATE vofa_sendzip(VOFA* vofa_pt,uint8_t vofa_protocol,uint8_t vofa_frame_c
 }
 
 void VOFA_Sent(void){
-    VOFA_Printf("%d,%d,%d\n",imu963ra_gyro_z,Speed_Duty,IMU_G);
+    VOFA_Printf("%d,%d\n",imu963ra_gyro_z,Speed_Duty);
                 vofa_ch_data[0]=imu963ra_gyro_z;
                 vofa_ch_data[1]=Speed_Duty;
-                vofa_ch_data[2]=IMU_G;
 }

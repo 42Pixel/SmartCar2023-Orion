@@ -316,3 +316,5 @@ code/attitude_solution.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 code/attitude_solution.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h :
+code/attitude_solution.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h :

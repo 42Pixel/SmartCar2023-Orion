@@ -71,21 +71,23 @@ void Scan_Key(void){
 
 
     if (K[Key1]){
-        Speed_Duty+=10;
         Beep();
+        s_pid_KP+=0.1;
         K[Key1] = FALSE;
     }
     if (K[Key2]){
-        Speed_Duty=0;
         Beep();
+        s_pid_KP-=0.1;
         K[Key2] = FALSE;
     }
     if (K[Key3]){
         Beep();
+        s_pid_KD+=0.1;
         K[Key3] = FALSE;
     }
     if (K[Key4]){
         Beep();
+        s_pid_KD-=0.1;
         K[Key4] = FALSE;
     }
 }

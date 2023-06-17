@@ -314,5 +314,7 @@ user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/Filter.h :
 user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h :
+user/cpu0_main.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h
+e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h :
 user/cpu0_main.o :	../user/isr_config.h
 ../user/isr_config.h :
