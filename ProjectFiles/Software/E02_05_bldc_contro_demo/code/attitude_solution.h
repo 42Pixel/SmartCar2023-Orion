@@ -36,6 +36,7 @@ typedef struct {
 
 extern quater_param_t Q_info ;  // 全局四元数
 extern euler_param_t eulerAngle;
+extern icm_param_t icm_data;
 
 void gyroOffset_init(void);
 float fast_sqrt(float x);

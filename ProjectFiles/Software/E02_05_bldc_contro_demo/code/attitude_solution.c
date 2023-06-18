@@ -1,7 +1,7 @@
 #include "attitude_solution.h"
 #include <math.h>
 
-#define delta_T     0.01f  //1ms计算一次
+#define delta_T     0.005f  //1ms计算一次
 #define M_PI        3.1415926f
 #define alpha       0.3f
 
@@ -63,14 +63,16 @@ void gyroOffset_init(void)                       // 陀螺仪零飘初始化
 //转化为实际物理值
 void ICM_getValues() {
     //一阶低通滤波，单位g/s
-    icm_data.acc_x = (((float) imu963ra_acc_x) * alpha) * 4 / 4098 + icm_data.acc_x * (1 - alpha);
-    icm_data.acc_y = (((float) imu963ra_acc_y) * alpha) * 4 / 4098 + icm_data.acc_y * (1 - alpha);
-    icm_data.acc_z = (((float) imu963ra_acc_z) * alpha) * 4 / 4098 + icm_data.acc_z * (1 - alpha);
+    icm_data.acc_x = (((float) imu963ra_acc_x) * alpha) * 8 / 4098 + icm_data.acc_x * (1 - alpha);
+    icm_data.acc_y = (((float) imu963ra_acc_y) * alpha) * 8 / 4098 + icm_data.acc_y * (1 - alpha);
+    icm_data.acc_z = (((float) imu963ra_acc_z) * alpha) * 8 / 4098 + icm_data.acc_z * (1 - alpha);
 
     //陀螺仪角度转弧度
-    icm_data.gyro_x = ((float) imu963ra_gyro_x - GyroOffset.Xdata) * M_PI / 180 / 14.3f;
-    icm_data.gyro_y = ((float) imu963ra_gyro_y - GyroOffset.Ydata) * M_PI / 180 / 14.3f;
-    icm_data.gyro_z = ((float) imu963ra_gyro_z - GyroOffset.Zdata) * M_PI / 180 / 14.3f;
+    icm_data.gyro_x = ((float) imu963ra_gyro_x - GyroOffset.Xdata) * M_PI /180 /  14.3f;
+    icm_data.gyro_y = ((float) imu963ra_gyro_y - GyroOffset.Ydata) * M_PI /180 /  14.3f;
+    icm_data.gyro_z = ((float) imu963ra_gyro_z - GyroOffset.Zdata) * M_PI /180 /  14.3f;
+
+
 }
 
 
@@ -103,6 +105,7 @@ void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) 
     vx = 2 * (q1q3 - q0q2);
     vy = 2 * (q0q1 + q2q3);
     vz = q0q0 - q1q1 - q2q2 + q3q3;
+
 
     //叉积来计算估算的重力和实际测量的重力这两个重力向量之间的误差。
     ex = ay * vz - az * vy;
@@ -155,8 +158,8 @@ void ICM_getEulerianAngles(void) {
     float q3 = Q_info.q3;
 
     eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                          // pitch
-    eulerAngle.roll  = atan2(1-2 * q1 * q1 - 2 * q2 * q2 , 2 * (q2 * q3 + q0 * q1))*90;              // roll
-    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * (q1 * q2 - q0 * q3))*90;              // yaw
+    eulerAngle.roll  = atan2(-2 * q1 * q1 - 2 * q2 * q2 + 1 , 2 * q2 * q3 + 2 * q0 * q1);                // roll
+    eulerAngle.yaw   = atan2(-2 * q2 * q2 - 2 * q3 * q3 + 1 , 2 * q1 * q2 + 2 * q0 * q3);               // yaw
 
 
 /*   姿态限制*/
