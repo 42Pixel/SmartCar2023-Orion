@@ -38,13 +38,7 @@ extern quater_param_t Q_info ;  // 全局四元数
 extern euler_param_t eulerAngle;
 
 void gyroOffset_init(void);
-
 float fast_sqrt(float x);
-
-void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az);
-
-void ICM_getValues();
-
 void ICM_getEulerianAngles(void);
 
 #endif

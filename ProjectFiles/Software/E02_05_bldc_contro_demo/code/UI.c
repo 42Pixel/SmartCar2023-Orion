@@ -21,10 +21,13 @@ void UI_Page1(void){
     ips200_draw_line    (0,16*10,239,16*10,RGB565_WHITE);
 
     ips200_show_string  (0,     16*11,  "Gyro_Z");
-    ips200_show_float   (120,   16*11,   eulerAngle.yaw,4,     6);
 
-    ips200_show_float   (120,   16*13,   s_pid_KP,4,     6);
-    ips200_show_float   (120,   16*14,   s_pid_KD,4,     6);
+    ips200_show_float   (120,   16*11,   eulerAngle.pitch,4,     6);
+    ips200_show_float   (120,   16*12,   eulerAngle.roll,4,     6);
+    ips200_show_float   (120,   16*13,   eulerAngle.yaw,4,     6);
+
+    ips200_show_float   (120,   16*14,   s_pid_KP,4,     6);
+    ips200_show_float   (120,   16*15,   s_pid_KD,4,     6);
 }
 
 

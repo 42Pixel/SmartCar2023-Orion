@@ -35,7 +35,27 @@ float KalmanFilter(Kalman *kfp,float input){
 	    cmd_rxbuf,cmd_sz,
 	    UART_2,UART_2,UART_2);
 ```
-:heavy_exclamation_mark:**找准方向[IMU]**
+:white_check_mark:**找准方向[IMU]**
+```c
+void ICM_getEulerianAngles(void) {
+    //采集陀螺仪数据
+    imu963ra_get_gyro();    // 获取陀螺仪角速度
+    imu963ra_get_acc(); // 获取加速度计加速度
+
+    ICM_getValues();
+    ICM_AHRSupdate(icm_data.gyro_x, icm_data.gyro_y, icm_data.gyro_z, icm_data.acc_x, icm_data.acc_y, icm_data.acc_z);
+
+    float q0 = Q_info.q0;
+    float q1 = Q_info.q1;
+    float q2 = Q_info.q2;
+    float q3 = Q_info.q3;
+
+    eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                          // pitch
+    eulerAngle.roll  = atan2(1-2 * q1 * q1 - 2 * q2 * q2 , 2 * (q2 * q3 + q0 * q1))*90;              // roll
+    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * (q1 * q2 - q0 * q3))*90;              // yaw
+```
+
+:heavy_exclamation_mark:**蹒跚学步[循迹]**
 
 ## 参考资料
 [第十八届全国大学生智能车竞赛竞速比赛规则](https://blog.csdn.net/zhuoqingjoking97298/article/details/127817742)

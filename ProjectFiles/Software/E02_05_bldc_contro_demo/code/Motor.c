@@ -14,15 +14,15 @@
 //#define SERVO_MOTOR_DUTY(x)         ((float)PWM_DUTY_MAX/(1000.0/(float)SERVO_MOTOR_FREQ)*(0.5+(float)(x)/90.0))
 #define SERVO_MOTOR_DUTY(x)           (1000*(0.5+(float)(x)/90.0))
 
-#define SERVO_MOTOR_L_MAX           (50 )                                     // 定义主板上舵机活动范围 角度
-#define SERVO_MOTOR_R_MAX           (150)                                     // 定义主板上舵机活动范围 角度
+#define SERVO_MOTOR_L_MAX           (70 )                                     // 定义主板上舵机活动范围 角度
+#define SERVO_MOTOR_R_MAX           (130)                                     // 定义主板上舵机活动范围 角度
 
 #if (SERVO_MOTOR_FREQ<50 || SERVO_MOTOR_FREQ>300)
     #error "SERVO_MOTOR_FREQ ERROE!"
 #endif
 
-float s_pid_KP=0.0;                                                           //舵机PD参数
-float s_pid_KD=0.0;
+float s_pid_KP=2.0;                                                           //舵机PD参数
+float s_pid_KD=0.13;
 
 
 int8 Speed_Duty;                                                           // 速度设定值
@@ -112,11 +112,11 @@ void Motor_Control(void){
 //----------------------------------------------------------------------------------------------------------------
 void Servo_Motor_Control(void){
     float servo_duty;                                                    // 舵机动作角度
-    servo_duty=100-PID_Servo(45,eulerAngle.yaw);                            // PD控制
-    if(servo_duty>=150)
-        servo_duty=150;
-    else if(servo_duty<=50)
-        servo_duty=50;
+    servo_duty=100-PID_Servo(60,eulerAngle.yaw);                            // PD控制
+    if(servo_duty>=SERVO_MOTOR_R_MAX)
+        servo_duty=SERVO_MOTOR_R_MAX;
+    else if(servo_duty<=SERVO_MOTOR_L_MAX)
+        servo_duty=SERVO_MOTOR_L_MAX;
     pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(servo_duty)); // 设置舵机PWM
 }
 

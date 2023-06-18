@@ -30,6 +30,12 @@ float fast_sqrt(float x) {
 }
 
 
+float Accel_x,Accel_y,Accel_z,Gyro_x,Gyro_y,Gyro_z;
+float ax,ay,az;
+float Angle_x_temp,Angle_y_temp;
+float Angle_X_Final,Angle_Y_Final;
+
+
 void gyroOffset_init(void)                       // 陀螺仪零飘初始化
 {
     GyroOffset.Xdata = 0;
@@ -58,8 +64,8 @@ void gyroOffset_init(void)                       // 陀螺仪零飘初始化
 void ICM_getValues() {
     //一阶低通滤波，单位g/s
     icm_data.acc_x = (((float) imu963ra_acc_x) * alpha) * 4 / 4098 + icm_data.acc_x * (1 - alpha);
-    icm_data.acc_y = (((float) imu963ra_acc_y) * alpha) * 8 / 4098 + icm_data.acc_y * (1 - alpha);
-    icm_data.acc_z = (((float) imu963ra_acc_z) * alpha) * 8 / 4098 + icm_data.acc_z * (1 - alpha);
+    icm_data.acc_y = (((float) imu963ra_acc_y) * alpha) * 4 / 4098 + icm_data.acc_y * (1 - alpha);
+    icm_data.acc_z = (((float) imu963ra_acc_z) * alpha) * 4 / 4098 + icm_data.acc_z * (1 - alpha);
 
     //陀螺仪角度转弧度
     icm_data.gyro_x = ((float) imu963ra_gyro_x - GyroOffset.Xdata) * M_PI / 180 / 14.3f;
@@ -80,9 +86,8 @@ void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) 
     float q0q0 = q0 * q0;
     float q0q1 = q0 * q1;
     float q0q2 = q0 * q2;
-//    float q0q3 = q0 * q3;
     float q1q1 = q1 * q1;
-//    float q1q2 = q1 * q2;
+    float q1q2 = q1 * q2;
     float q1q3 = q1 * q3;
     float q2q2 = q2 * q2;
     float q2q3 = q2 * q3;
@@ -124,12 +129,6 @@ void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) 
     q1 = q1 + (q0 * gx + q2 * gz - q3 * gy) * halfT;
     q2 = q2 + (q0 * gy - q1 * gz + q3 * gx) * halfT;
     q3 = q3 + (q0 * gz + q1 * gy - q2 * gx) * halfT;
-//       float delta_2=(2*halfT*gx)*(2*halfT*gx)+(2*halfT*gy)*(2*halfT*gy)+(2*halfT*gz)*(2*halfT*gz);
-//     //整合四元数率    四元数微分方程  四元数更新算法，二阶毕卡法
-//        q0 = (1-delta_2/8)*q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
-//        q1 = (1-delta_2/8)*q1 + (q0*gx + q2*gz - q3*gy)*halfT;
-//        q2 = (1-delta_2/8)*q2 + (q0*gy - q1*gz + q3*gx)*halfT;
-//        q3 = (1-delta_2/8)*q3 + (q0*gz + q1*gy - q2*gx)*halfT;
 
 
     // normalise quaternion
@@ -155,9 +154,10 @@ void ICM_getEulerianAngles(void) {
     float q2 = Q_info.q2;
     float q3 = Q_info.q3;
 
-    eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                             // pitch
-    eulerAngle.roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2 * q2 + 1)*90-90;              // roll
-    eulerAngle.yaw = atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1);             // yaw
+    eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                          // pitch
+    eulerAngle.roll  = atan2(1-2 * q1 * q1 - 2 * q2 * q2 , 2 * (q2 * q3 + q0 * q1))*90;              // roll
+    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * (q1 * q2 - q0 * q3))*90;              // yaw
+
 
 /*   姿态限制*/
 //    if (eulerAngle.roll > 90 || eulerAngle.roll < -90) {
@@ -175,4 +175,3 @@ void ICM_getEulerianAngles(void) {
 //        eulerAngle.yaw += 360;
 //    }
 }
-
