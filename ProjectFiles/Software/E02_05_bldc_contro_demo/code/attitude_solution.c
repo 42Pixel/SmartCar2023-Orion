@@ -1,13 +1,21 @@
 #include "attitude_solution.h"
 #include <math.h>
+#include <stdint.h>
+#include "Float.h"
 
 #define delta_T     0.005f  //1ms计算一次
 #define M_PI        3.1415926f
 #define alpha       0.3f
 
-float I_ex, I_ey, I_ez;                         // 误差积分
+#define CV_PI       3.1415926535897932384626433832795f
 
-quater_param_t Q_info = {1, 0, 0};              // 全局四元数
+float I_ex, I_ey, I_ez;                         // 误差积分
+float Accel_x,Accel_y,Accel_z,Gyro_x,Gyro_y,Gyro_z;
+float ax,ay,az;
+float Angle_x_temp,Angle_y_temp;
+float Angle_X_Final,Angle_Y_Final;
+
+quater_param_t Q_info = {1, 0, 0,0};              // 全局四元数
 euler_param_t eulerAngle;                       //欧拉角
 
 icm_param_t icm_data;
@@ -16,6 +24,9 @@ gyro_param_t GyroOffset;
 float param_Kp = 0.18;                          // 加速度计的收敛速率比例增益
 float param_Ki = 0.002;                         // 陀螺仪收敛速率的积分增益 0.004
 
+
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#define min(a,b) (((a) < (b)) ? (a) : (b))
 
 
 
@@ -29,11 +40,57 @@ float fast_sqrt(float x) {
     return y;
 }
 
+float easy_actan2(float dy, float dx)
+{
+    float ax = fabs(dx), ay = fabs(dy);
+    float temp1 = min(ax, ay)/max(ax, ay);
+    float temp2 = temp1*temp1;
+    float result = ((-0.0464964749 * temp2 + 0.15931422) * temp2 - 0.327622764) * temp2 * temp1 + temp1;
 
-float Accel_x,Accel_y,Accel_z,Gyro_x,Gyro_y,Gyro_z;
-float ax,ay,az;
-float Angle_x_temp,Angle_y_temp;
-float Angle_X_Final,Angle_Y_Final;
+    if (ay > ax)
+    {
+        result = (PI / 2) - result;
+    }
+    if (dx < 0.0f)
+    {
+        result = PI - result;
+    }
+    if (dy < 0.0f)
+    {
+        result = (-result);
+    }
+    return result;
+}
+
+
+static const float atan2_p1 = 0.9997878412794807f*(float)(180/CV_PI);
+static const float atan2_p3 = -0.3258083974640975f*(float)(180/CV_PI);
+static const float atan2_p5 = 0.1555786518463281f*(float)(180/CV_PI);
+static const float atan2_p7 = -0.04432655554792128f*(float)(180/CV_PI);
+
+float fastAtan2( float y, float x )
+{
+    float ax = abs(x);
+    float ay =abs(y);//首先不分象限，求得一个锐角角度
+    float a, c, c2;
+    if( ax >= ay )
+    {
+        c = ay/(ax + (float)DBL_EPSILON);
+        c2 = c*c;
+        a = (((atan2_p7*c2 + atan2_p5)*c2 + atan2_p3)*c2 + atan2_p1)*c;
+    }
+    else
+    {
+        c = ax/(ay + (float)DBL_EPSILON);
+        c2 = c*c;
+        a = 90.f - (((atan2_p7*c2 + atan2_p5)*c2 + atan2_p3)*c2 + atan2_p1)*c;
+    }
+    if( x < 0 )//锐角求出后，根据x和y的正负性确定向量的方向，即角度。
+        a = 180.f - a;
+    if( y < 0 )
+        a = 360.f - a;
+    return a;
+}
 
 
 void gyroOffset_init(void)                       // 陀螺仪零飘初始化
@@ -151,7 +208,8 @@ void ICM_getEulerianAngles(void) {
 
     eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                          // pitch
     eulerAngle.roll  = atan2(1-2 * q1 * q1 - 2 * q2 * q2 , 2 * q2 * q3 + 2 * q0 * q1);               // roll
-    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * q1 * q2 + 2 * q0 * q3);              // yaw
+//    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * q1 * q2 + 2 * q0 * q3);              // yaw
+    eulerAngle.yaw   = fastAtan2( 2 * q1 * q2 + 2 * q0 * q3 , 1-2 * q2 * q2 - 2 * q3 * q3);              // yaw
 
 /*   姿态限制*/
 //    if (eulerAngle.roll > 90 || eulerAngle.roll < -90) {

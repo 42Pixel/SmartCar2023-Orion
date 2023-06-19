@@ -318,3 +318,5 @@ code/attitude_solution.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/attitude_solution.h :
 code/attitude_solution.o :	e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h
 e:/Project/ADS/WorkSpace/E02_05_bldc_contro_demo/code/UI.h :
+code/attitude_solution.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/Float.h
+d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/Float.h :
