@@ -13,10 +13,10 @@ euler_param_t eulerAngle;                       //欧拉角
 icm_param_t icm_data;
 gyro_param_t GyroOffset;
 
-int GyroOffset_init = 0;
-
 float param_Kp = 0.18;                          // 加速度计的收敛速率比例增益
-float param_Ki = 0.003;                         // 陀螺仪收敛速率的积分增益 0.004
+float param_Ki = 0.002;                         // 陀螺仪收敛速率的积分增益 0.004
+
+
 
 
 float fast_sqrt(float x) {
@@ -53,8 +53,6 @@ void gyroOffset_init(void)                       // 陀螺仪零飘初始化
     GyroOffset.Xdata /= 100;
     GyroOffset.Ydata /= 100;
     GyroOffset.Zdata /= 100;
-
-    GyroOffset_init = 1;
 }
 
 
@@ -62,7 +60,6 @@ void gyroOffset_init(void)                       // 陀螺仪零飘初始化
 
 //转化为实际物理值
 void ICM_getValues() {
-    //一阶低通滤波，单位g/s
     icm_data.acc_x = (((float) imu963ra_acc_x) * alpha) * 8 / 4098 + icm_data.acc_x * (1 - alpha);
     icm_data.acc_y = (((float) imu963ra_acc_y) * alpha) * 8 / 4098 + icm_data.acc_y * (1 - alpha);
     icm_data.acc_z = (((float) imu963ra_acc_z) * alpha) * 8 / 4098 + icm_data.acc_z * (1 - alpha);
@@ -71,12 +68,9 @@ void ICM_getValues() {
     icm_data.gyro_x = ((float) imu963ra_gyro_x - GyroOffset.Xdata) * M_PI /180 /  14.3f;
     icm_data.gyro_y = ((float) imu963ra_gyro_y - GyroOffset.Ydata) * M_PI /180 /  14.3f;
     icm_data.gyro_z = ((float) imu963ra_gyro_z - GyroOffset.Zdata) * M_PI /180 /  14.3f;
-
-
 }
 
 
-//互补滤波
 void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) {
     float halfT = 0.5 * delta_T;
     float vx, vy, vz;    //当前的机体坐标系上的重力单位向量
@@ -142,10 +136,8 @@ void ICM_AHRSupdate(float gx, float gy, float gz, float ax, float ay, float az) 
     Q_info.q3 = q3 * norm;
 }
 
-
 /*把四元数转换成欧拉角*/
 void ICM_getEulerianAngles(void) {
-    //采集陀螺仪数据
     imu963ra_get_gyro();    // 获取陀螺仪角速度
     imu963ra_get_acc(); // 获取加速度计加速度
 
@@ -158,9 +150,8 @@ void ICM_getEulerianAngles(void) {
     float q3 = Q_info.q3;
 
     eulerAngle.pitch = asin(-2 * q1 * q3 + 2 * q0 * q2)*90;                                          // pitch
-    eulerAngle.roll  = atan2(-2 * q1 * q1 - 2 * q2 * q2 + 1 , 2 * q2 * q3 + 2 * q0 * q1);                // roll
-    eulerAngle.yaw   = atan2(-2 * q2 * q2 - 2 * q3 * q3 + 1 , 2 * q1 * q2 + 2 * q0 * q3);               // yaw
-
+    eulerAngle.roll  = atan2(1-2 * q1 * q1 - 2 * q2 * q2 , 2 * q2 * q3 + 2 * q0 * q1);               // roll
+    eulerAngle.yaw   = atan2(1-2 * q2 * q2 - 2 * q3 * q3 , 2 * q1 * q2 + 2 * q0 * q3);              // yaw
 
 /*   姿态限制*/
 //    if (eulerAngle.roll > 90 || eulerAngle.roll < -90) {
