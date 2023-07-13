@@ -32,45 +32,74 @@
 * 日期              作者                备注
 * 2022-09-15       pudding            first version
 ********************************************************************************************************************/
+
+#define LED1                    (P20_9)
+#define LED2                    (P21_4)
+
 #include "zf_common_headfile.h"
 #pragma section all "cpu0_dsram"
+
+
 // 将本语句与#pragma section all restore语句之间的全局变量都放在CPU0的RAM中
 
 
-// 工程导入到软件之后，应该选中工程然后点击refresh刷新一下之后再编译
-// 工程默认设置为关闭优化，可以自己右击工程选择properties->C/C++ Build->Setting
-// 然后在右侧的窗口中找到C/C++ Compiler->Optimization->Optimization level处设置优化等级
-// 一般默认新建立的工程都会默认开2级优化，因此大家也可以设置为2级优化
-
-// 对于TC系列默认是不支持中断嵌套的，希望支持中断嵌套需要在中断内使用 interrupt_global_enable(0); 来开启中断嵌套
-// 简单点说实际上进入中断后TC系列的硬件自动调用了 interrupt_global_disable(); 来拒绝响应任何的中断，因此需要我们自己手动调用 interrupt_global_enable(0); 来开启中断的响应。
-
-// 本例程是开源库移植用空工程
-// 本例程是开源库移植用空工程
-// 本例程是开源库移植用空工程
-
-// **************************** 代码区域 ****************************
+//********************************************** 代码区域 *************************************************
 
 int core0_main(void)
 {
-    clock_init();                   // 获取时钟频率<务必保留>
-    debug_init();                   // 初始化默认调试串口
-    // 此处编写用户代码 例如外设初始化代码等
+    clock_init();                                           // 获取时钟频率<务必保留>
+    debug_init();                                           // 初始化默认调试串口
 
+//********************************************* 硬件初始化 *************************************************
+    gpio_init(LED1, GPO, GPIO_LOW, GPO_PUSH_PULL);          // 初始化 LED1 输出 默认高电平 推挽输出模式
+    gpio_init(LED2, GPO, GPIO_LOW, GPO_PUSH_PULL);          // 初始化 LED1 输出 默认高电平 推挽输出模式
 
+    ips200_set_dir(IPS200_PORTAIT);
+    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
+    ips200_init(IPS200_TYPE_PARALLEL8);
 
-    // 此处编写用户代码 例如外设初始化代码等
-    cpu_wait_event_ready();         // 等待所有核心初始化完毕
+    Motor_Init();
+    gps_init();
+    Key_Init();
+    imu660ra_init();
+
+    system_delay_ms(500);                  //等待所有硬件初始化完毕
+
+//********************************************* 软件初始化 *************************************************
+    gyroOffset_init();                      //消除imu660ra零漂
+
+//********************************************* 中断初始化 *************************************************
+    pit_ms_init(CCU61_CH1, 19);             //IMU中断间隔 19毫秒
+    pit_ms_init(CCU61_CH0, 7);              //电机中断间隔 7毫秒
+    pit_ms_init(CCU60_CH0, 13);             //按键中断间隔 13毫秒
+
+    uart_init(UART_2,9600,UART2_TX_P10_5,UART2_RX_P10_6);
+
+    cpu_wait_event_ready();                // 等待所有核心初始化完毕
+
+//********************************************** 程序执行 **************************************************
+    VOFA* VOFA_pt = vofa_create();         //创建VOFA对象
+    vofa_init(VOFA_pt,                     //初始化当前的vofa对象
+              vofa_ch_data,ch_sz,
+              custom_buf,custom_sz,
+              cmd_rxbuf,cmd_sz,
+              UART_2,UART_2,UART_2);
+
+    Run_Start();
+
     while (TRUE)
     {
-        // 此处编写需要循环执行的代码
+        gpio_set_level(LED1, !gps_tau1201.state);       //收到GPS数据，LED点亮
+        if(gps_tau1201_flag){
+            gps_tau1201_flag = 0;
+            gps_data_parse();                           // 开始解析数据
+            }
 
+        Run();
+        VOFA_Sent();                             // 数据发送
+        UI();                                    // 参数显示
 
-
-
-        // 此处编写需要循环执行的代码
     }
 }
 
 #pragma section all restore
-// **************************** 代码区域 ****************************

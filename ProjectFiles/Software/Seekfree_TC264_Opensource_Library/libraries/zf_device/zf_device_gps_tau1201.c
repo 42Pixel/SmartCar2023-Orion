@@ -171,45 +171,45 @@ static double get_double_number (char *s)
 // 使用示例     utc_to_btc(&gps->time);
 // 备注信息     内部使用
 //-------------------------------------------------------------------------------------------------------------------
-static void utc_to_btc (gps_time_struct *time)
-{
-    uint8 day_num = 0;
-
-    time->hour = time->hour + 8;
-    if(23 < time->hour)
-    {
-        time->hour -= 24;
-        time->day += 1;
-
-        if(2 == time->month)
-        {
-            day_num = 28;
-            if((0 == time->year % 4 && 0 != time->year % 100) || 0 == time->year % 400) // 判断是否为闰年
-            {
-                day_num ++;                                                     // 闰月 2月为29天
-            }
-        }
-        else
-        {
-            day_num = 31;                                                       // 1 3 5 7 8 10 12这些月份为31天
-            if(4  == time->month || 6  == time->month || 9  == time->month || 11 == time->month )
-            {
-                day_num = 30;
-            }
-        }
-
-        if(time->day > day_num)
-        {
-            time->day = 1;
-            time->month ++;
-            if(12 < time->month)
-            {
-                time->month -= 12;
-                time->year ++;
-            }
-        }
-    }
-}
+//static void utc_to_btc (gps_time_struct *time)
+//{
+//    uint8 day_num = 0;
+//
+//    time->hour = time->hour + 8;
+//    if(23 < time->hour)
+//    {
+//        time->hour -= 24;
+//        time->day += 1;
+//
+//        if(2 == time->month)
+//        {
+//            day_num = 28;
+//            if((0 == time->year % 4 && 0 != time->year % 100) || 0 == time->year % 400) // 判断是否为闰年
+//            {
+//                day_num ++;                                                     // 闰月 2月为29天
+//            }
+//        }
+//        else
+//        {
+//            day_num = 31;                                                       // 1 3 5 7 8 10 12这些月份为31天
+//            if(4  == time->month || 6  == time->month || 9  == time->month || 11 == time->month )
+//            {
+//                day_num = 30;
+//            }
+//        }
+//
+//        if(time->day > day_num)
+//        {
+//            time->day = 1;
+//            time->month ++;
+//            if(12 < time->month)
+//            {
+//                time->month -= 12;
+//                time->year ++;
+//            }
+//        }
+//    }
+//}
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     RMC语句解析
@@ -221,14 +221,14 @@ static void utc_to_btc (gps_time_struct *time)
 //-------------------------------------------------------------------------------------------------------------------
 static uint8 gps_gnrmc_parse (char *line, gps_info_struct *gps)
 {
-    uint8 state = 0, temp = 0;
-
+    uint8 state = 0;
+//    uint8 temp = 0;
     double  latitude = 0;                                                       // 纬度
     double  longitude = 0;                                                      // 经度
 
     double lati_cent_tmp = 0, lati_second_tmp = 0;
     double long_cent_tmp = 0, long_second_tmp = 0;
-    float speed_tmp = 0;
+//    float speed_tmp = 0;
     char *buf = line;
     uint8 return_state = 0;
 
@@ -260,21 +260,27 @@ static uint8 gps_gnrmc_parse (char *line, gps_info_struct *gps)
         gps->latitude   = gps->latitude_degree + lati_cent_tmp / 60;
         gps->longitude  = gps->longitude_degree + long_cent_tmp / 60;
 
-        speed_tmp       = get_float_number(&buf[get_parameter_index(7, buf)]);  // 速度(海里/小时)
-        gps->speed      = speed_tmp * 1.85f;                                    // 转换为公里/小时
+//        speed_tmp       = get_float_number(&buf[get_parameter_index(7, buf)]);  // 速度(海里/小时)
+//        gps->speed      = speed_tmp * 1.85f;                                    // 转换为公里/小时
         gps->direction  = get_float_number(&buf[get_parameter_index(8, buf)]);  // 角度
+
+        if (gps->direction > 180) {
+            gps->direction -= 360;
+           } else if (gps->direction < -180) {
+               gps->direction += 360;
+           }
     }
 
     // 在定位没有生效前也是有时间数据的，可以直接解析
-    gps->time.hour    = (buf[7] - '0') * 10 + (buf[8] - '0');                   // 时间
-    gps->time.minute  = (buf[9] - '0') * 10 + (buf[10] - '0');
-    gps->time.second  = (buf[11] - '0') * 10 + (buf[12] - '0');
-    temp = get_parameter_index(9, buf);
-    gps->time.day     = (buf[temp + 0] - '0') * 10 + (buf[temp + 1] - '0');     // 日期
-    gps->time.month   = (buf[temp + 2] - '0') * 10 + (buf[temp + 3] - '0');
-    gps->time.year    = (buf[temp + 4] - '0') * 10 + (buf[temp + 5] - '0') + 2000;
-
-    utc_to_btc(&gps->time);
+//    gps->time.hour    = (buf[7] - '0') * 10 + (buf[8] - '0');                   // 时间
+//    gps->time.minute  = (buf[9] - '0') * 10 + (buf[10] - '0');
+//    gps->time.second  = (buf[11] - '0') * 10 + (buf[12] - '0');
+//    temp = get_parameter_index(9, buf);
+//    gps->time.day     = (buf[temp + 0] - '0') * 10 + (buf[temp + 1] - '0');     // 日期
+//    gps->time.month   = (buf[temp + 2] - '0') * 10 + (buf[temp + 3] - '0');
+//    gps->time.year    = (buf[temp + 4] - '0') * 10 + (buf[temp + 5] - '0') + 2000;
+//
+//    utc_to_btc(&gps->time);
 
     return return_state;
 }
@@ -298,7 +304,7 @@ static uint8 gps_gngga_parse (char *line, gps_info_struct *gps)
     if(',' != state)
     {
         gps->satellite_used = (uint8)get_int_number(&buf[get_parameter_index(7, buf)]);
-        gps->height         = get_float_number(&buf[get_parameter_index(9, buf)]) + get_float_number(&buf[get_parameter_index(11, buf)]);  // 高度 = 海拔高度 + 地球椭球面相对大地水准面的高度
+//        gps->height         = get_float_number(&buf[get_parameter_index(9, buf)]) + get_float_number(&buf[get_parameter_index(11, buf)]);  // 高度 = 海拔高度 + 地球椭球面相对大地水准面的高度
         return_state = 1;
     }
 

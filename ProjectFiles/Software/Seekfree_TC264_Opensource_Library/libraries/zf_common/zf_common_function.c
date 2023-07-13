@@ -35,6 +35,7 @@
 
 #include "zf_common_debug.h"
 #include "zf_common_function.h"
+#include "zf_driver_uart.h"
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     获取整型数的最大公约数 九章算术之更相减损术
@@ -901,5 +902,136 @@ uint32 zf_sprintf (int8 *buff, const int8 *format, ...)
     va_end(arg);
 
     return buff_len;
+}
+
+
+void VOFA_Printf(const int8 *format, ...){
+#if(PRINTF)     //如果宏定义PRINTF为0 则不编译printf函数内容，调用printf没有任何操作
+    va_list arg;
+    va_start(arg, format);
+
+    while (*format)
+    {
+        int8 ret = *format;
+        if (ret == '%')
+        {
+            switch (*++format)
+            {
+                case 'a':// 十六进制p计数法输出浮点数 暂未实现
+                {
+
+
+                }break;
+
+
+                case 'c':// 一个字符
+                {
+                    int8 ch = (int8)va_arg(arg, uint32);
+                    uart_write_byte(UART_2, (int8)ch);
+
+                }break;
+
+
+                case 'd':
+                case 'i':// 有符号十进制整数
+                {
+                    int8 vstr[33];
+                    int32 ival = (int32)va_arg(arg, int32);
+                    uint8 vlen = number_conversion_ascii(ival, vstr, 1, 10);
+                    if(ival<0)  uart_write_byte(UART_2, '-');
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+                }break;
+
+                case 'f':// 浮点数，输出小数点后六位  不能指定输出精度
+                case 'F':// 浮点数，输出小数点后六位  不能指定输出精度
+                {
+                    int8 vstr[33];
+                    double ival = (double)va_arg(arg, double);
+                    uint8 vlen = number_conversion_ascii((uint32)(int32)ival, vstr, 1, 10);
+                    if(ival<0)  uart_write_byte(UART_2, '-');
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+                    uart_write_byte(UART_2, '.');
+
+                    ival = ((double)ival - (int32)ival)*1000000;
+                    vlen = number_conversion_ascii((uint32)(int32)ival, vstr, 1, 10);
+                    while(6>vlen)
+                    {
+                        vstr[vlen] = '0';
+                        vlen++;
+                    }
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+                    break;
+                }
+
+                case 'u':// 无符号十进制整数
+                {
+                    int8 vstr[33];
+                    uint32 ival = (uint32)va_arg(arg, uint32);
+                    uint8 vlen = number_conversion_ascii(ival, vstr, 0, 10);
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+                }break;
+
+                case 'o':// 无符号八进制整数
+                {
+                    int8 vstr[33];
+                    uint32 ival = (uint32)va_arg(arg, uint32);
+                    uint8 vlen = number_conversion_ascii(ival, vstr, 0, 8);
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+
+                }break;
+
+                case 'x':// 无符号十六进制整数
+                case 'X':// 无符号十六进制整数
+                {
+                    int8 vstr[33];
+                    uint32 ival = (uint32)va_arg(arg, uint32);
+                    uint8 vlen = number_conversion_ascii(ival, vstr, 0, 16);
+                    printf_reverse_order(vstr,vlen);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,vlen);
+                }break;
+
+
+                case 's':// 字符串
+                {
+                    int8 *pc = va_arg(arg, int8 *);
+                    while (*pc)
+                    {
+                        uart_write_byte(UART_2, (int8)(*pc));
+                        pc++;
+                    }
+                }break;
+
+                case 'p':// 以16进制形式输出指针
+                {
+                    int8 vstr[33];
+                    uint32 ival = (uint32)va_arg(arg, uint32);
+                    uint8 vlen = number_conversion_ascii(ival, vstr, 0, 16);
+                    printf_reverse_order(vstr,8);
+                    uart_write_buffer(UART_2, (uint8 *)vstr,8);
+
+                }break;
+
+
+                case '%':// 输出字符%
+                {
+                    uart_write_byte(UART_2, '%');
+                }break;
+
+                default:break;
+            }
+        }
+        else
+        {
+            uart_write_byte(UART_2, (int8)(*format));
+        }
+        format++;
+    }
+    va_end(arg);
+#endif
 }
 

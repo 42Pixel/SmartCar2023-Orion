@@ -89,7 +89,8 @@ void        func_hex_to_str                     (char *str, uint32 number);
 
 uint32      zf_sprintf                          (int8 *buff, const int8 *format, ...);
 //=====================================================常规函数区=====================================================
-
+#define  PRINTF     1
+extern void VOFA_Printf(const int8 *format, ...);
 
 #endif
 
