@@ -1,9 +1,9 @@
 #include "Motor.h"
 
-float s_pid_KP=2.0;                                                           //舵机PD参数
-float s_pid_KD=0.2;
-
-int8 Speed_Duty;                                                           // 速度设定值
+float Servo_pid_KP=2.0;                                                           //舵机PD参数
+float Servo_pid_KD=0.2;
+float servo_duty;
+uint8 Speed_Duty;                                                           // 速度设定值
 int16 Encoder;                                                             // 编码器计数
 
 //----------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ int8 PID_Servo(float SetPoint,float NowPoint){
     static float iError,LastError,PrevError;                            //iError:误差,LastError:上次误差，上上次误差
     float output;                                                       //输出
     iError = SetPoint - NowPoint;                                       //当前误差  设定的目标值和实际值的偏差
-    output = s_pid_KP * iError+ s_pid_KD * (iError - LastError);        //增量计算
+    output = Servo_pid_KP * iError+ Servo_pid_KD * (iError - LastError);        //增量计算
 
     /*存储误差  用于下次计算*/
     PrevError = LastError;
@@ -88,8 +88,8 @@ void Motor_Control(void){
 //----------------------------------------------------------------------------------------------------------------
 void Servo_Motor_Control(void){
 
-    if(RunStart_Status==1){
-        float servo_duty;                                                    // 舵机动作角度
+    if(Servo_Status){
+//        float servo_duty;                                                    // 舵机动作角度
         servo_duty=100+PID_Servo(azimuth_E,eulerAngle.yaw);                          // PD控制
         if(servo_duty>=SERVO_MOTOR_R_MAX)
             servo_duty=SERVO_MOTOR_R_MAX;

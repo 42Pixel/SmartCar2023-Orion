@@ -188,6 +188,7 @@
 									<listOptionValue builtIn="false" value="-lrt"/>
 									<listOptionValue builtIn="false" value="--lsl-core=vtc"/>
 								</option>
+								<option id="com.infineon.aurix.buildsystem.managed.c.linker.tasking.fpmodel.1062640700" name="Floating-point model:" superClass="com.infineon.aurix.buildsystem.managed.c.linker.tasking.fpmodel" useByScannerDiscovery="false" value="com.infineon.aurix.buildsystem.managed.c.linker.tasking.fpmodel.fastSingle" valueType="enumerated"/>
 							</tool>
 							<tool id="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking.518174043" name="Print Size" superClass="com.infineon.aurix.buildsystem.managed.tool.printsize.tasking"/>
 						</toolChain>

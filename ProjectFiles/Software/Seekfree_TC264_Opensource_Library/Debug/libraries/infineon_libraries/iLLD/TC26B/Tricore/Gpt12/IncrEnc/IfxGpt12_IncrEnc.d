@@ -12,8 +12,8 @@ libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o
 e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/Configurations/Ifx_Cfg.h :
 libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/Infra/Platform/Tricore/Compilers/CompilerTasking.h
 e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/Infra/Platform/Tricore/Compilers/CompilerTasking.h :
-libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/stddef.h
-d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/stddef.h :
+libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	d:/ADS/tools/Compilers/Tasking_1.1r8/ctc/include/stddef.h
+d:/ADS/tools/Compilers/Tasking_1.1r8/ctc/include/stddef.h :
 libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/Cpu/Std/Platform_Types.h
 e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/Cpu/Std/Platform_Types.h :
 libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/Cpu/Std/Ifx_TypesTasking.h
@@ -110,5 +110,5 @@ libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o
 e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/_PinMap/IfxGpt12_PinMap.h :
 libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/Port/Std/IfxPort.h
 e:/Project/ADS/WorkSpace/Seekfree_TC264_Opensource_Library/libraries/infineon_libraries/iLLD/TC26B/Tricore/Port/Std/IfxPort.h :
-libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h
-d:/ADS/plugins/com.infineon.aurix.tools_1.9.4/build_system/tools/Compilers/Tasking_1.1r8/ctc/include/string.h :
+libraries/infineon_libraries/iLLD/TC26B/Tricore/Gpt12/IncrEnc/IfxGpt12_IncrEnc.o :	d:/ADS/tools/Compilers/Tasking_1.1r8/ctc/include/string.h
+d:/ADS/tools/Compilers/Tasking_1.1r8/ctc/include/string.h :

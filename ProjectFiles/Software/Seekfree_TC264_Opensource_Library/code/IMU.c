@@ -1,7 +1,7 @@
 #include "IMU.h"
 #include "math.h"
 
-#define delta_T     0.0002f //1ms计算一次0.001
+#define delta_T     0.0002f //1ms计算一次0.0002
 #define M_PI        3.14159265f
 
 //******************************************************************
@@ -14,8 +14,8 @@ float I_ex, I_ey, I_ez;  // 误差积分
  icm_param_t  icm_data;
  gyro_param_t  GyroOffset;
 
-float param_Kp = 0.00042;   // 加速度计的收敛速率比例增益0.18  0.0004
-float param_Ki = 0.089;   //陀螺仪收敛速率的积分增益0.004    0.008   0.088
+float param_Kp = 0.00042;   // 加速度计的收敛速率比例增益0.18  0.0004 0.00042
+float param_Ki = 0.089;   //陀螺仪收敛速率的积分增益0.004    0.008   0.088 0.089
 int go=0;
 
 float fast_sqrt(float x) {
@@ -157,15 +157,20 @@ void ICM_getEulerianAngles(void) {
     float q3 = Q_info.q3;
 
 
-    //四元数计算欧拉角
+//    //四元数计算欧拉角
     eulerAngle.yaw =50* atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1) * 180 /  M_PI ;
-
+//    eulerAngle.yaw =atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1);
+//
     /*   姿态限制 -180-180*/
     if (eulerAngle.yaw > 180) {
         eulerAngle.yaw -= 360;
        } else if (eulerAngle.yaw < -180) {
            eulerAngle.yaw += 360;
        }
+//
+//    if( Run_Start_Status==false){
+//        eulerAngle.yaw+=GpsOffset;          //yaw角加上GPS的方向值，统一坐标系
+//
+//    }
 
-    eulerAngle.yaw+=GpsOffset;          //yaw角加上GPS的方向值，统一坐标系
 }

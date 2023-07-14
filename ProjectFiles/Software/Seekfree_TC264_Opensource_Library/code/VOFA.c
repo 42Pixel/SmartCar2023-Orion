@@ -170,7 +170,11 @@ VOFA_STATE vofa_sendzip(VOFA* vofa_pt,uint8_t vofa_protocol,uint8_t vofa_frame_c
 }
 
 void VOFA_Sent(void){
-    VOFA_Printf("%f,%d\n",eulerAngle.yaw,Speed_Duty);
+    VOFA_Printf("%f,%f,%f,%f,%f,%f\n",eulerAngle.yaw,direction_N,azimuth_N,azimuth_E,servo_duty,GpsOffset);
         vofa_ch_data[1]=eulerAngle.yaw;
-        vofa_ch_data[2]=Speed_Duty;
+        vofa_ch_data[2]=direction_N;
+        vofa_ch_data[3]=azimuth_N;
+        vofa_ch_data[4]=azimuth_E;
+        vofa_ch_data[5]=servo_duty;
+        vofa_ch_data[6]=GpsOffset;
 }

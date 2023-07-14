@@ -69,7 +69,7 @@ int core0_main(void)
     gyroOffset_init();                      //消除imu660ra零漂
 
 //********************************************* 中断初始化 *************************************************
-    pit_ms_init(CCU61_CH1, 19);             //IMU中断间隔 19毫秒
+    pit_ms_init(CCU61_CH1, 51);             //IMU中断间隔 19毫秒
     pit_ms_init(CCU61_CH0, 7);              //电机中断间隔 7毫秒
     pit_ms_init(CCU60_CH0, 13);             //按键中断间隔 13毫秒
 
@@ -85,8 +85,6 @@ int core0_main(void)
               cmd_rxbuf,cmd_sz,
               UART_2,UART_2,UART_2);
 
-    Run_Start();
-
     while (TRUE)
     {
         gpio_set_level(LED1, !gps_tau1201.state);       //收到GPS数据，LED点亮
@@ -94,10 +92,11 @@ int core0_main(void)
             gps_tau1201_flag = 0;
             gps_data_parse();                           // 开始解析数据
             }
-
-        Run();
+        Key_Active();
+        UI();
+        Run_Start();
         VOFA_Sent();                             // 数据发送
-        UI();                                    // 参数显示
+                                      // 参数显示
 
     }
 }

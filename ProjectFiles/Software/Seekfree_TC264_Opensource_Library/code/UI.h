@@ -4,9 +4,15 @@
 #include "zf_common_headfile.h"
 #include "stdbool.h"
 
-extern void UI_Page1(void);
-extern void UI_Page2(void);
-extern void UI(void);
+enum UI_Page{
+    InfoPage,
+    SetPage,
+    GPSPage,
+    AboutPage
+};
 
+extern enum UI_Page Page_Num;
+extern bool Gui_Page_Refersh;
+extern void UI(void);
 
 #endif

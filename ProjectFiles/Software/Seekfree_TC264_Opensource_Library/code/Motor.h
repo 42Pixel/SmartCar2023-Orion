@@ -26,11 +26,11 @@
 
 
 
-extern int8 Speed_Duty;
-extern int16 Encoder;
+extern uint8 Speed_Duty;
 
-extern float s_pid_KP;                                                           //舵机PD参数
-extern float s_pid_KD;
+extern float Servo_pid_KP;                                                           //舵机PD参数
+extern float Servo_pid_KD;
+extern  float servo_duty;
 
 extern void Servo_Motor_Control(void);
 extern void Encoder_Get(void);

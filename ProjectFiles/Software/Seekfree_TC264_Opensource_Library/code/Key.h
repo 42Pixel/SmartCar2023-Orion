@@ -2,9 +2,13 @@
 #define _KEY_H_
 
 #include "zf_common_headfile.h"
+#include "stdbool.h"
 
-
-extern uint8 Run_Status;
+enum Set_Action{
+    Servo_PD_KP,
+    Servo_PD_KD,
+    Speed
+};
 
 typedef struct {
     uint8 key1;
@@ -27,8 +31,14 @@ typedef struct {
     uint8 key4;
 } Key_flag;
 
+extern bool Run_Start_Status;
+extern bool Servo_Status;
+extern bool Gui_Page_Refersh;
+extern bool Gui_Status;
+extern uint8 Key_Num;
+
 extern void Key_Init(void);
-extern void Scan_Key(void);
 extern void Key_scan(void);
+extern void Key_Active(void);
 
 #endif

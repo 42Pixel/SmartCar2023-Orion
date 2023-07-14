@@ -9,11 +9,16 @@
 #define BUZZER_PIN              (P33_10)
 
 uint8 Key_Num=0;
-uint8 Run_Status=0;
+
+bool Run_Start_Status=false;
+bool Servo_Status=false;
+bool Gui_Page_Refersh=true;
+bool Gui_Status=true;
 
 Key_status Status={1,1,1,1};        // 当前按键状态
 Last_status L_status;               // 上一次按键状态
 Key_flag Flag;                      // 按键触发标志位
+enum Set_Action set_action;
 
 //----------------------------------------------------------------------------------------------------------------
 // 函数简介     按键&蜂鸣器初始化
@@ -48,35 +53,87 @@ void Beep(void){
 }
 
 
-void Key_Active(uint8 num){
-
-
-
-    switch (num){
+void Key_Active(void){
+    switch (Key_Num){
         case 1:
                 Beep();
-                s_pid_KP+=0.5;
+
+                if(Page_Num==InfoPage){          //第一页参数设置
+                    Run_Start_Status=true;       //开跑
+                    Gui_Status=false;            //关闭UI显示
+                }
+
+                if(Page_Num==SetPage){          //第二页参数设置
+                    switch (set_action) {
+                        case Servo_PD_KP : Servo_pid_KP+=0.5;break;
+                        case Servo_PD_KD : Servo_pid_KD+=0.01;break;
+                        case Speed : Start_Speed+=5;break;
+                        default:break;
+                    }
+                }
+                if(Page_Num==GPSPage){
+                    Point_Get();
+                }
+
+
 
                 Flag.key1 = 0;                  // 使用按键之后，应该清除标志位
-
                 break;
         case 2:
                 Beep();
-                s_pid_KD+=0.1;
-                Flag.key2 = 0;                 // 使用按键之后，应该清除标志位
+                if(Page_Num==InfoPage){        //第一页参数设置
+                    Speed_Duty=0;              //速度置零
+                    Servo_Status=false;        //锁定舵机控制
+                    Gui_Status=true;           //开启UI显示
+                }
 
+                if(Page_Num==SetPage){          //第二页参数设置
+                    if(Page_Num==SetPage){          //第二页参数设置
+                        switch (set_action) {
+                            case Servo_PD_KP : Servo_pid_KP-=0.5;break;
+                            case Servo_PD_KD : Servo_pid_KD-=0.01;break;
+                            case Speed : Start_Speed-=5;break;
+                            default:break;
+                        }
+                    }
+
+                    if(Page_Num==GPSPage){
+                        Point_Get_Count++;
+                    }
+
+                }
+
+
+
+                Flag.key2 = 0;                 // 使用按键之后，应该清除标志位
                 break;
         case 3:
                 Beep();
-//                Flsh_Wite();
-                Flag.key2 = 0;                 // 使用按键之后，应该清除标志位
+                if(Page_Num==InfoPage){        //第一页参数设置
+                    Point_Count=0;             //点位置零
+                }
 
+                if(Page_Num==SetPage){          //第二页参数设置
+                    set_action++;               //切换设置项
+                    if(set_action>2)
+                        set_action=0;
+                }
+
+                if(Page_Num==GPSPage){
+                    Point_Get_Count--;
+                }
+
+                Flag.key3 = 0;                 // 使用按键之后，应该清除标志位
                 break;
         case 4:
                  Beep();
-
+                 Page_Num++;                   //  切换页面
+                 Gui_Page_Refersh=true;
+                 if(Page_Num>2)
+                     Page_Num=0;
 
                  Flag.key4 = 0;                 // 使用按键之后，应该清除标志位
+                 break;
 
     }
     Key_Num=0;
@@ -93,8 +150,6 @@ void Key_Active(uint8 num){
 void Key_scan(void)
 {
 
-    if(gpio_get_level(SWITCH1))Run_Status=1;
-//    if(gpio_get_level(SWITCH2))
 
     L_status.key1 = Status.key1;                              // 保存按键状态
     Status.key1 = gpio_get_level(KEY1_GPIO);                  // 读取当前按键状态
@@ -123,8 +178,6 @@ void Key_scan(void)
     {
         Key_Num=4;                                           // 标志位 置位 之后，可以使用标志位执行自己想要做的事件
     }
-
-    Key_Active(Key_Num);
 }
 
 
