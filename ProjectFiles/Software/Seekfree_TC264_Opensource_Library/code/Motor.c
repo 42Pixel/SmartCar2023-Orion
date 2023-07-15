@@ -2,7 +2,7 @@
 
 float Servo_pid_KP=2.0;                                                           //舵机PD参数
 float Servo_pid_KD=0.2;
-float servo_duty;
+uint16 servo_duty;
 uint8 Speed_Duty;                                                           // 速度设定值
 int16 Encoder;                                                             // 编码器计数
 

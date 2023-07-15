@@ -263,6 +263,17 @@ IFX_INTERRUPT(uart3_rx_isr, 0, UART3_RX_INT_PRIO)
 
     gps_uart_callback();
 
+//    if(Run_Status==true){
+//        if ((distance <= 1.5))
+//                {
+//            Point_Count++;
+//                }
+//        else if(((azimuth_E >= 60) || (azimuth_E <= -60)) && (distance <= 2))
+//                {
+//            Point_Count++;
+//                }
+//    }
+//    if (Point_Count>=Array_SIZE-1){Speed_Duty=0;Point_Count=Array_SIZE-1;}
 
 }
 IFX_INTERRUPT(uart3_er_isr, 0, UART3_ER_INT_PRIO)

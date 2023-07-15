@@ -14,6 +14,11 @@ void UI_Config(void){
     ips200_show_string  (0,     16*7,  "Gyro_Z");                        ips200_show_float   (120,   16*7,   eulerAngle.yaw,3,     3);
     ips200_show_string  (0,     16*8,  "azimuth_N");                     ips200_show_float   (120,   16*8,   azimuth_N,3,     3);
     ips200_show_string  (0,     16*9,  "azimuth_E");                     ips200_show_float   (120,   16*9,   azimuth_E,3,     3);
+
+    ips200_draw_line    (0,168,239,168,RGB565_WHITE);
+
+    ips200_show_string  (0,     16*11,  "GPS_Point");                    ips200_show_uint    (120,     16*11,  Point_Count,2);
+    ips200_show_string  (0,     16*12,  "GPS_Distance");                 ips200_show_float    (120,     16*12,  distance,2,     3);
 }
 
 /******************************************第二页（通过按键设置PD参数，各种速度）********************************************/
@@ -27,7 +32,7 @@ void UI_Set(void){
 
 /******************************************第三页（通过按键打点，存点）********************************************/
 void UI_GPS_Point(void){
-    ips200_show_string  (0,     16*1,   "GPS-Page");                     ips200_show_uint  (120,     16*1,     Point_Get_Count,2);
+    ips200_show_string  (0,     16*1,   "GPS-Page");                     ips200_show_uint  (120,     16*1,     Point_Count,2);
     ips200_show_float   (0,   16*2,   run_latitude[0],4,     6);         ips200_show_float   (120,   16*2,   run_longitude[0],4,     6);
     ips200_show_float   (0,   16*3,   run_latitude[1],4,     6);         ips200_show_float   (120,   16*3,   run_longitude[1],4,     6);
     ips200_show_float   (0,   16*4,   run_latitude[2],4,     6);         ips200_show_float   (120,   16*4,   run_longitude[2],4,     6);

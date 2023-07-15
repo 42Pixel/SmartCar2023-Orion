@@ -11,9 +11,11 @@
 uint8 Key_Num=0;
 
 bool Run_Start_Status=false;
+bool Run_Status=false;
 bool Servo_Status=false;
 bool Gui_Page_Refersh=true;
 bool Gui_Status=true;
+
 
 Key_status Status={1,1,1,1};        // 当前按键状态
 Last_status L_status;               // 上一次按键状态
@@ -56,8 +58,7 @@ void Beep(void){
 void Key_Active(void){
     switch (Key_Num){
         case 1:
-                Beep();
-
+            Beep();
                 if(Page_Num==InfoPage){          //第一页参数设置
                     Run_Start_Status=true;       //开跑
                     Gui_Status=false;            //关闭UI显示
@@ -80,10 +81,12 @@ void Key_Active(void){
                 Flag.key1 = 0;                  // 使用按键之后，应该清除标志位
                 break;
         case 2:
-                Beep();
+            Beep();
                 if(Page_Num==InfoPage){        //第一页参数设置
                     Speed_Duty=0;              //速度置零
+                    pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(100));            //舵机回正
                     Servo_Status=false;        //锁定舵机控制
+                    Run_Status=false;
                     Gui_Status=true;           //开启UI显示
                 }
 
@@ -98,7 +101,7 @@ void Key_Active(void){
                     }
 
                     if(Page_Num==GPSPage){
-                        Point_Get_Count++;
+                        Point_Count++;
                     }
 
                 }
@@ -108,9 +111,15 @@ void Key_Active(void){
                 Flag.key2 = 0;                 // 使用按键之后，应该清除标志位
                 break;
         case 3:
-                Beep();
+            Beep();
                 if(Page_Num==InfoPage){        //第一页参数设置
                     Point_Count=0;             //点位置零
+                    Q_info.q0=1.0f;
+                    Q_info.q1=0.0f;
+                    Q_info.q2=0.0f;
+                    Q_info.q3=0.0f;
+                    eulerAngle.yaw = 0.0f;
+                    Run_Status=false;
                 }
 
                 if(Page_Num==SetPage){          //第二页参数设置
@@ -120,13 +129,13 @@ void Key_Active(void){
                 }
 
                 if(Page_Num==GPSPage){
-                    Point_Get_Count--;
+                    Point_Count--;
                 }
 
                 Flag.key3 = 0;                 // 使用按键之后，应该清除标志位
                 break;
         case 4:
-                 Beep();
+            Beep();
                  Page_Num++;                   //  切换页面
                  Gui_Page_Refersh=true;
                  if(Page_Num>2)

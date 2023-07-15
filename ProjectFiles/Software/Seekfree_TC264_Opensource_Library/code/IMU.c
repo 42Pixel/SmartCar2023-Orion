@@ -167,10 +167,5 @@ void ICM_getEulerianAngles(void) {
        } else if (eulerAngle.yaw < -180) {
            eulerAngle.yaw += 360;
        }
-//
-//    if( Run_Start_Status==false){
-//        eulerAngle.yaw+=GpsOffset;          //yaw角加上GPS的方向值，统一坐标系
-//
-//    }
 
 }

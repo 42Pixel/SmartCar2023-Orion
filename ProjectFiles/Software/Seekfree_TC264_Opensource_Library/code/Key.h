@@ -7,7 +7,8 @@
 enum Set_Action{
     Servo_PD_KP,
     Servo_PD_KD,
-    Speed
+    Speed,
+    Servo
 };
 
 typedef struct {
@@ -32,6 +33,7 @@ typedef struct {
 } Key_flag;
 
 extern bool Run_Start_Status;
+extern bool Run_Status;
 extern bool Servo_Status;
 extern bool Gui_Page_Refersh;
 extern bool Gui_Status;

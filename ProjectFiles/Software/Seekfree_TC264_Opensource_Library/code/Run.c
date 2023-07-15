@@ -15,9 +15,10 @@ double run_longitude[Array_SIZE];
 float GpsOffset;
 float azimuth_N,azimuth_E,direction_N;
 float distance;
+float Filter_buff[10] = {0}; // 滤波缓冲区
+
 uint8 Point_Count=0;
-uint8 Point_Get_Count=0;
-uint8 Start_Speed=20;
+uint8 Start_Speed=15;
 
 
 // 初始化卡尔曼滤波器
@@ -43,45 +44,46 @@ double kalmanFilterUpdate(KalmanFilter* filter, double measurement) {
     return filter->x;
 }
 
-void Run(void){
 
- // 初始化卡尔曼滤波器
-    KalmanFilter filter;
-    kalmanFilterInit(&filter, 1.0, 1.0, 0.01, 0.1);
-    direction_N= kalmanFilterUpdate(&filter,gps_tau1201.direction)-GpsOffset;
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      输入一个值弹出一个值，所有值取平均 | 滑动滤波
+//  @param      待滤波的值
+//  @return
+//  Sample usage:
+//-------------------------------------------------------------------------------------------------------------------
 
-    azimuth_N= get_two_points_azimuth(run_latitude[Point_Count], run_longitude[Point_Count], run_latitude[Point_Count+1], run_longitude[Point_Count+1])-GpsOffset;
-    if (azimuth_N > 180) {
-        azimuth_N -= 360;
-       } else if (azimuth_N < -180) {
-           azimuth_N += 360;
-       }
-    distance= get_two_points_distance(gps_tau1201.latitude, gps_tau1201.longitude, run_latitude[Point_Count+1], run_longitude[Point_Count+1]);
+float Movingaverage_filter(float value,float Filter_buff[])
+{
+    int8_t i = 0;//遍历
+    float temp = value;
+    float Filter_sum = 0;
+    Filter_buff[Filter_N] = temp;
 
-    azimuth_E=direction_N-azimuth_N;   //目标航向角减去GPS航向角
-
-
-    if ((distance <= 1.2))
-            {
-        Point_Count++;
-            }
-    else if(((azimuth_E >= 60) || (azimuth_E <= -60)) && (distance <= 2))
-            {
-        Point_Count++;
-            }
-    else if (Point_Count>=2){
-        Speed_Duty=0;
+    for(i = 0; i < Filter_N; i++)
+    {
+        Filter_buff[i] = Filter_buff[i+1];      //数据左移
+        Filter_sum += Filter_buff[i];
     }
-
+    temp = Filter_sum / Filter_N;
+    return temp;
 }
 
 void Point_Get(void){
-    if(Point_Get_Count<=Array_SIZE-1){
-        run_latitude[Point_Get_Count]=gps_tau1201.latitude;
-        run_longitude[Point_Get_Count]=gps_tau1201.longitude;
-        Point_Get_Count++;
+    if(Point_Count<=Array_SIZE-1){
+        run_latitude[Point_Count]=gps_tau1201.latitude;
+        run_longitude[Point_Count]=gps_tau1201.longitude;
+        Point_Count++;
     }
 }
+
+//void Run(void){
+//
+//// // 初始化卡尔曼滤波器
+////    KalmanFilter filter;
+////    kalmanFilterInit(&filter, 1.0, 1.0, 0.01, 0.1);
+////    direction_N= kalmanFilterUpdate(&filter,gps_tau1201.direction)-GpsOffset;
+//
+//}
 
 void Run_Start(void){
     static double startpoint1[2];
@@ -98,21 +100,23 @@ void Run_Start(void){
         if (GpsOffset > 180) {
             GpsOffset -= 360;
         }
-//
-//        for(int i=0;i<50;i++){
-//            GpsOffset+=gps_tau1201.direction;
-//            VOFA_Sent();
-//            system_delay_ms(100);
-//        }
-//        GpsOffset/=50;
-
-
         Run_Start_Status=false;
         Servo_Status=true;                          //解锁舵机控制
-
+        Run_Status=true;
     }
     else{
-        Run();
+//        Run();
+        direction_N = Movingaverage_filter(gps_tau1201.direction, Filter_buff);
+
+            azimuth_N= get_two_points_azimuth(run_latitude[Point_Count], run_longitude[Point_Count], run_latitude[Point_Count+1], run_longitude[Point_Count+1])-GpsOffset;
+            if (azimuth_N > 180) {
+                azimuth_N -= 360;
+               } else if (azimuth_N < -180) {
+                   azimuth_N += 360;
+               }
+            azimuth_E=direction_N-azimuth_N-GpsOffset;   //目标航向角减去GPS航向角
+
+            distance= get_two_points_distance(gps_tau1201.latitude, gps_tau1201.longitude, run_latitude[Point_Count+1], run_longitude[Point_Count+1]);
     }
 
 }
