@@ -1,10 +1,8 @@
 #include "MOTORCTRL.H"
 
-float Servo_pid_KP=2.0;                                                           //舵机PD参数
+float Servo_pid_KP=2.5;                                                           //舵机PD参数
 float Servo_pid_KD=0.2;
 uint8 servo_duty;
-uint8 Speed_Duty;                                                           // 速度设定值
-int16 Encoder;                                                             // 编码器计数
 
 //----------------------------------------------------------------------------------------------------------------
 // 函数简介     舵机PID
@@ -35,49 +33,11 @@ int8 PID_Servo(float SetPoint,float NowPoint){
 // 备注信息
 //----------------------------------------------------------------------------------------------------------------
 void MotorCtrl_Init(void){
-    pwm_init(PWM_CH, 1000, 0);                                                 // PWM 通道1 初始化频率1KHz 占空比初始为0
-    gpio_init(DIR_CH, GPO, GPIO_HIGH, GPO_PUSH_PULL);                          // 初始化电机方向输出引脚
-
-    encoder_dir_init(ENCODER_TIM, ENCODER_PLUS, ENCODER_DIR);                  // 初始化编码器采值引脚及定时器
-
+//    motor_control.set_dir == REVERSE;
+    motor_control.brake_flag=0;                                                // 关闭刹车
     pwm_init(SERVO_MOTOR_PWM, SERVO_MOTOR_FREQ, 0);                            // 舵机PWM初始化
     pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(100));              // 舵机回正
 }
-
-
-//----------------------------------------------------------------------------------------------------------------
-// 函数简介     读取编码器数值
-// 参数说明     encoder            编码器数值
-// 返回参数     void
-// 使用示例     Encoder_Get();
-// 备注信息
-//----------------------------------------------------------------------------------------------------------------
-void Encoder_Get(void){
-    Encoder = encoder_get_count(ENCODER_TIM);                                  // 采集对应编码器数据
-    encoder_clear_count(ENCODER_TIM);                                          // 清除对应计数
-}
-
-
-//----------------------------------------------------------------------------------------------------------------
-// 函数简介     电机控制
-// 参数说明
-// 参数说明
-// 返回参数
-// 使用示例     内部调用
-// 备注信息
-//----------------------------------------------------------------------------------------------------------------
-void Motor_Control(void){
-    gpio_set_level(DIR_CH, 0);
-
-    if(Speed_Duty<=0)
-       Speed_Duty=0;
-    else
-        if(Speed_Duty>=MAX_DUTY)
-            Speed_Duty=MAX_DUTY;                                                 // 限值Speed_Duty
-
-    pwm_set_duty(PWM_CH, Speed_Duty * (PWM_DUTY_MAX / 100));                     // 计算占空比
-}
-
 
 //----------------------------------------------------------------------------------------------------------------
 // 函数简介     舵机控制

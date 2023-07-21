@@ -62,7 +62,7 @@
 #define CCU6_1_CH0_INT_SERVICE	IfxSrc_Tos_cpu1
 #define CCU6_1_CH0_ISR_PRIORITY 32
 
-#define CCU6_1_CH1_INT_SERVICE	IfxSrc_Tos_cpu0
+#define CCU6_1_CH1_INT_SERVICE	IfxSrc_Tos_cpu1
 #define CCU6_1_CH1_ISR_PRIORITY 33
 
 
@@ -106,7 +106,7 @@
 #define UART2_RX_INT_PRIO       17
 #define UART2_ER_INT_PRIO       18
 
-#define	UART3_INT_SERVICE       IfxSrc_Tos_cpu1
+#define	UART3_INT_SERVICE       IfxSrc_Tos_cpu0
 #define UART3_TX_INT_PRIO       19
 #define UART3_RX_INT_PRIO       20
 #define UART3_ER_INT_PRIO       21

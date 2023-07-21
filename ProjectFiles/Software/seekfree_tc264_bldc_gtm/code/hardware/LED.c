@@ -74,14 +74,5 @@ void led_output(void)
     {
         gpio_set_level(LED_ERR_PIN, 1);                     // πÿ±’π ’œµ∆
     }
-
-//    if(motor_control.run_model)
-//    {
-//        gpio_set_level(LED_MODEL_PIN, 1);
-//    }
-//    else
-//    {
-//        gpio_set_level(LED_MODEL_PIN, 0);
-//    }
 }
 

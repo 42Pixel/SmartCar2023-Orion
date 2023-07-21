@@ -150,7 +150,7 @@ main-build: seekfree_tc264_bldc_gtm.elf secondary-outputs
 seekfree_tc264_bldc_gtm.elf: $(OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: TASKING Linker'
-	cctc --lsl-file="../Lcf_Tasking_Tricore_Tc.lsl" -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy "E:\Project\23智能车参考资料\无刷电机\TC264_GTM_BLDC_Project-master\【源码】下载到驱动板的源码\seekfree_tc264_bldc_gtm\libraries\zf_device\zf_device_config.a" -Wl--map-file="seekfree_tc264_bldc_gtm.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --fp-model=3 -lrt --lsl-core=vtc --exceptions --strict --anachronisms --force-c++ -Ctc26xb -o"seekfree_tc264_bldc_gtm.elf" -Wl-o"seekfree_tc264_bldc_gtm.hex:IHEX" $(OBJS)
+	cctc --lsl-file="../Lcf_Tasking_Tricore_Tc.lsl" -Wl-Oc -Wl-OL -Wl-Ot -Wl-Ox -Wl-Oy "E:\Project\ADS\WorkSpace\seekfree_tc264_bldc_gtm\libraries\zf_device\zf_device_config.a" -Wl--map-file="seekfree_tc264_bldc_gtm.map" -Wl-mc -Wl-mf -Wl-mi -Wl-mk -Wl-ml -Wl-mm -Wl-md -Wl-mr -Wl-mu --no-warnings= -Wl--error-limit=42 --fp-model=1 -lrt --lsl-core=vtc --exceptions --strict --anachronisms --force-c++ -Ctc26xb -o"seekfree_tc264_bldc_gtm.elf" -Wl-o"seekfree_tc264_bldc_gtm.hex:IHEX" $(OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -71,7 +71,7 @@ void advance_switch(void)
 {
     GTM_SPE0_CTRL_STAT.B.SPE_EN   = FALSE;
 
-    if(motor_control.set_dir == FORWARD)
+    if(motor_control.set_dir == REVERSE)
     {
         GTM_SPE0_OUT_PAT0.U = MOTOR_FOREWARD_0;     // 正转换相表
         GTM_SPE0_OUT_PAT1.U = MOTOR_FOREWARD_1;
@@ -114,7 +114,7 @@ void motor_set_dir(void)
         motor_control.set_dir = gpio_get_level(MOTOR_DIR_IN_PIN);
         advance_switch();
     }
-    motor_dir_out();
+//    motor_dir_out();
 }
 
 //-------------------------------------------------------------------------------------------------------------------

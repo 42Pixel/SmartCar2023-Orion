@@ -27,7 +27,8 @@ void UI_Set(void){
     ips200_show_string  (0,     16*2,  "Servo_pid_KP");                     ips200_show_float   (120,   16*2,   Servo_pid_KP,4,     6);
     ips200_show_string  (0,     16*3,  "Servo_pid_KD");                     ips200_show_float   (120,   16*3,   Servo_pid_KD,4,     6);
     ips200_show_string  (0,     16*4,  "Speed");                            ips200_show_uint    (120,   16*4,   Start_Speed,3);
-
+    ips200_show_string  (0,     16*5,  "Stop Point");                       ips200_show_uint    (120,   16*5,   Stop_Point,2);
+    ips200_show_string  (0,     16*6,  "Back Point");                       ips200_show_uint    (120,   16*6,   Back_Point,3);
 }
 
 /******************************************第三页（通过按键打点，存点）********************************************/

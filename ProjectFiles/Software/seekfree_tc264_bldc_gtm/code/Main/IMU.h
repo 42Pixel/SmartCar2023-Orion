@@ -38,6 +38,7 @@ typedef struct {
 
 extern quater_param_t Q_info ;  // 全局四元数
 extern euler_param_t eulerAngle;
+extern float Yaw;
 
 extern signed short  aacx,aacy,aacz;            //加速度传感器原始数据
 extern signed short  gyrox,gyroy,gyroz;         //陀螺仪原始数据

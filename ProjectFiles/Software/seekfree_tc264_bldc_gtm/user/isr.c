@@ -57,10 +57,6 @@ IFX_INTERRUPT(cc60_pit_ch1_isr, 0, CCU6_0_CH1_ISR_PRIORITY)
     interrupt_global_enable(0);                     // 开启中断嵌套
     pit_clear_flag(CCU60_CH1);
 
-    Encoder_Get();
-    Motor_Control();
-    Servo_Motor_Control();
-
 
 }
 
@@ -79,32 +75,24 @@ IFX_INTERRUPT(cc61_pit_ch1_isr, 0, CCU6_1_CH1_ISR_PRIORITY)
     interrupt_global_enable(0);                     // 开启中断嵌套
     pit_clear_flag(CCU61_CH1);
 
-    adc_read();             //读三相电流
+    adc_read();                     //读三相电流
 
     battery_check();
 
-    motor_set_dir();
+    advance_switch();               //切换换相表
 
-    motor_speed_out();
+    phase_change_time_check();      //换相超时处理
 
-    phase_change_time_check();
+    motor_check();                  //电机状态检测
 
-    spe_g.speed.duty = pwm_in_duty;  //速度设置，300-5000;
 
-//
-//    if(motor_control.run_model)
-//    {
-//        spe_g.speed.duty = adc_information.current_board * PWM_PRIOD_LOAD / 4096;
-//    }
-//    else
-//    {
-//        spe_g.speed.duty = pwm_in_duty;
-//    }
-
-    motor_check();
-
-    speed_ctrl(spe_g.speed);
-
+    if(Motor_Status){
+        spe_g.speed.duty=Start_Speed;
+    }
+    else{
+        spe_g.speed.duty=0;
+    }
+    speed_ctrl(spe_g.speed);        //电机占空比输出
 }
 // **************************** PIT中断函数 ****************************
 

@@ -102,7 +102,7 @@ extern motor_struct motor_control;
 extern uint8 phase_change;
 
 void motor_information_out_init(void);
-void motor_set_dir(void);
+//void motor_set_dir(void);
 void speed_ctrl(speed_st speed);
 void advance_switch(void);
 void phase_change_manage(void);

@@ -35,36 +35,39 @@
 
 #include "zf_common_headfile.h"
 #pragma section all "cpu1_dsram"
-// 将本语句与#pragma section all restore语句之间的全局变量都放在CPU1的RAM中
-
-
-// 工程导入到软件之后，应该选中工程然后点击refresh刷新一下之后再编译
-// 工程默认设置为关闭优化，可以自己右击工程选择properties->C/C++ Build->Setting
-// 然后在右侧的窗口中找到C/C++ Compiler->Optimization->Optimization level处设置优化等级
-// 一般默认新建立的工程都会默认开2级优化，因此大家也可以设置为2级优化
-
-// 对于TC系列默认是不支持中断嵌套的，希望支持中断嵌套需要在中断内使用 enableInterrupts(); 来开启中断嵌套
-// 简单点说实际上进入中断后TC系列的硬件自动调用了 disableInterrupts(); 来拒绝响应任何的中断，因此需要我们自己手动调用 enableInterrupts(); 来开启中断的响应。
-
 
 // **************************** 代码区域 ****************************
 void core1_main(void)
 {
     disable_Watchdog();                     // 关闭看门狗
     interrupt_global_enable(0);             // 打开全局中断
-    // 此处编写用户代码 例如外设初始化代码等
+/**********************************************BLDC初始化部分*********************************************************/
+    led_init();                     // 初始化LED引脚
 
+    adc_collection_init();          // AD采值引脚初始化
 
+    move_filter_init(&speed_filter);// 初始化速度平滑滤波
 
+    motor_information_out_init();   // 初始化运行信息输出端口
 
-    // 此处编写用户代码 例如外设初始化代码等
+    pwm_input_init();               // 初始化输入捕获
+
+    gtm_bldc_init();                // 初始化GTM模块
+
+    motor_init();                   // 电机初始参数配置
+/**********************************************BLDC初始化部分*********************************************************/
+
+/*********************************************其他外设初始化部分*******************************************************/
+    imu660ra_init();
+    gyroOffset_init();
+/*********************************************其他外设初始化部分*******************************************************/
+
+    pit_ms_init(CCU61_CH1, 5);                // 周期中断初始化 5毫秒
+    pit_ms_init(CCU61_CH0, 20);               //IMU中断间隔 13毫秒
     cpu_wait_event_ready();                 // 等待所有核心初始化完毕
     while (TRUE)
     {
-        if(gps_tau1201_flag){
-            gps_tau1201_flag = 0;
-            gps_data_parse();                           // 开始解析数据
-}
+        led_output();       // 根据当前状态点亮或者熄灭LED灯
     }
 }
 #pragma section all restore

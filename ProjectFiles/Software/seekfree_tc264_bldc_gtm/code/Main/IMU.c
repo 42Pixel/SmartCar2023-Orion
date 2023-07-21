@@ -6,10 +6,10 @@
 
 //******************************************************************
 float I_ex, I_ey, I_ez;  // 误差积分
+float Yaw;
 
  quater_param_t  Q_info = {1, 0, 0};  // 全局四元数
  euler_param_t  eulerAngle; //欧拉角
-
 
  icm_param_t  icm_data;
  gyro_param_t  GyroOffset;
@@ -158,14 +158,11 @@ void ICM_getEulerianAngles(void) {
 
 
 //    //四元数计算欧拉角
-    eulerAngle.yaw =50* atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1) * 180 /  M_PI ;
-//    eulerAngle.yaw =atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1);
-//
-    /*   姿态限制 -180-180*/
-    if (eulerAngle.yaw > 180) {
+    eulerAngle.yaw =-(50* atan2(2 * q1 * q2 + 2 * q0 * q3, -2 * q2 * q2 - 2 * q3 * q3 + 1) * 180 /  M_PI);
+    if (eulerAngle.yaw > 360) {
         eulerAngle.yaw -= 360;
-       } else if (eulerAngle.yaw < -180) {
-           eulerAngle.yaw += 360;
-       }
-
+    } else if (eulerAngle.yaw < 0) {
+        eulerAngle.yaw += 360;
+    }
 }
+

@@ -170,11 +170,19 @@ VOFA_STATE vofa_sendzip(VOFA* vofa_pt,uint8_t vofa_protocol,uint8_t vofa_frame_c
 }
 
 void VOFA_Sent(void){
-    VOFA_Printf("%f,%f,%f,%d,%f,%f\n",eulerAngle.yaw,direction_N,azimuth_E,GPS_Count,GpsOffset,distance);
-        vofa_ch_data[1]=eulerAngle.yaw;
-        vofa_ch_data[2]=direction_N;
-        vofa_ch_data[3]=azimuth_E;
-        vofa_ch_data[4]=GPS_Count;
-        vofa_ch_data[5]=GpsOffset;
-        vofa_ch_data[6]=distance;
+//    VOFA_Printf("%f,%f,%f,%f,%f,%f\n",eulerAngle.yaw,gps_tau1201.direction,Direction_E,azimuth_N,azimuth_E,distance);
+//        vofa_ch_data[1]=eulerAngle.yaw;
+//        vofa_ch_data[2]=gps_tau1201.direction;
+//        vofa_ch_data[3]=Direction_E;
+//        vofa_ch_data[4]=azimuth_N;
+//        vofa_ch_data[5]=azimuth_E;
+//        vofa_ch_data[6]=distance;
+
+        VOFA_Printf("%f,%f,%f,%f,%f,%f\n",eulerAngle.yaw,gps_tau1201.direction,direction_N,azimuth_N,azimuth_E,GpsOffset);
+               vofa_ch_data[1]=eulerAngle.yaw;
+               vofa_ch_data[2]=gps_tau1201.direction;
+               vofa_ch_data[3]=direction_N;
+               vofa_ch_data[4]=azimuth_N;
+               vofa_ch_data[5]=azimuth_E;
+               vofa_ch_data[6]=GpsOffset;
 }

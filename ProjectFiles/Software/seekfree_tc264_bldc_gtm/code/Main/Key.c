@@ -4,7 +4,11 @@ uint8 Key_Num=0;
 
 bool Run_Start_Status=false;
 bool Run_Status=false;
+bool Run_Back=false;
+
 bool Servo_Status=false;
+bool Motor_Status=false;
+
 bool Gui_Page_Refersh=true;
 bool Gui_Status=true;
 
@@ -51,19 +55,22 @@ void Key_Active(void){
             Beep();
                 if(Page_Num==InfoPage){          //第一页参数设置
                     Run_Start_Status=true;       //开跑
+                    Motor_Status=true;
                     Gui_Status=false;            //关闭UI显示
                 }
 
                 if(Page_Num==SetPage){          //第二页参数设置
                     switch (set_action) {
                         case Servo_PD_KP : Servo_pid_KP+=0.5;break;
-                        case Servo_PD_KD : Servo_pid_KD+=0.01;break;
-                        case Speed : Start_Speed+=5;break;
+                        case Servo_PD_KD : Servo_pid_KD+=0.1;break;
+                        case Speed : Start_Speed+=100;break;
+                        case Stop : Stop_Point+=1;break;
+                        case Back : Back_Point+=1;break;
                         default:break;
                     }
                 }
                 if(Page_Num==GPSPage){
-//                    Point_Get();
+                    Point_Get();
                 }
 
 
@@ -72,20 +79,23 @@ void Key_Active(void){
                 break;
         case 2:
             Beep();
-                if(Page_Num==InfoPage){        //第一页参数设置
-                    Speed_Duty=0;              //速度置零
+                if(Page_Num==InfoPage){                 //第一页参数设置
                     pwm_set_duty(SERVO_MOTOR_PWM, (uint32)SERVO_MOTOR_DUTY(100));            //舵机回正
-                    Servo_Status=false;        //锁定舵机控制
+                    Servo_Status=false;                 //锁定舵机控制
                     Run_Status=false;
-                    Gui_Status=true;           //开启UI显示
+                    Motor_Status=false;
+                    Gui_Status=true;                    //开启UI显示
+
                 }
 
-                if(Page_Num==SetPage){          //第二页参数设置
-                    if(Page_Num==SetPage){          //第二页参数设置
+                if(Page_Num==SetPage){                  //第二页参数设置
+                    if(Page_Num==SetPage){              //第二页参数设置
                         switch (set_action) {
                             case Servo_PD_KP : Servo_pid_KP-=0.5;break;
-                            case Servo_PD_KD : Servo_pid_KD-=0.01;break;
-                            case Speed : Start_Speed-=5;break;
+                            case Servo_PD_KD : Servo_pid_KD-=0.1;break;
+                            case Speed : Start_Speed-=100;break;
+                            case Stop : Stop_Point-=1;break;
+                            case Back : Back_Point-=1;break;
                             default:break;
                         }
                     }
@@ -110,11 +120,12 @@ void Key_Active(void){
                     Q_info.q3=0.0f;
                     eulerAngle.yaw = 0.0f;
                     Run_Status=false;
+                    Run_Back=false;
                 }
 
                 if(Page_Num==SetPage){          //第二页参数设置
                     set_action++;               //切换设置项
-                    if(set_action>2)
+                    if(set_action>4)
                         set_action=0;
                 }
 

@@ -37,55 +37,45 @@
 // 将本语句与#pragma section all restore语句之间的全局变量都放在CPU0的RAM中
 
 // **************************** 代码区域 ****************************
+
+
 int core0_main(void)
 {
     clock_init();                   // 获取时钟频率<务必保留>
     debug_init();                   // 初始化默认调试串口
-/**********************************************BLDC初始化部分*********************************************************/
-    led_init();                     // 初始化LED引脚
-
-    adc_collection_init();          // AD采值引脚初始化
-
-    move_filter_init(&speed_filter);// 初始化速度平滑滤波
-
-    motor_information_out_init();   // 初始化运行信息输出端口
-
-    pwm_input_init();               // 初始化输入捕获
-
-    gtm_bldc_init();                // 初始化GTM模块
-
-    motor_init();                   // 电机初始参数配置
-
-    pit_ms_init(CCU61_CH1, 5);      // 周期中断初始化
-/**********************************************BLDC初始化部分*********************************************************/
-
 /*********************************************其他外设初始化部分*******************************************************/
-    ips200_set_dir(IPS200_PORTAIT);
-    ips200_set_color(RGB565_WHITE, RGB565_BLACK);
     ips200_init(IPS200_TYPE_PARALLEL8);
     MotorCtrl_Init();
     gps_init();
     Key_Init();
-    imu660ra_init();
+    uart_init(UART_2,9600,UART2_TX_P10_5,UART2_RX_P10_6);
     system_delay_ms(500);                  //等待所有硬件初始化完毕
 /*********************************************其他外设初始化部分*******************************************************/
 
 /**********************************************定时器初始化部分********************************************************/
-    pit_ms_init(CCU60_CH0, 13);             //按键中断间隔 13毫秒
-    pit_ms_init(CCU60_CH1, 7);              //电机中断间隔 7毫秒
-    pit_ms_init(CCU61_CH0, 19);             //IMU中断间隔 19毫秒
-//    pit_ms_init(CCU61_CH1, 5);
+    pit_ms_init(CCU60_CH0, 29  );               //按键中断间隔 13毫秒
 /**********************************************定时器初始化部分********************************************************/
-
-
     cpu_wait_event_ready();         // 等待所有F核心初始化完毕
+
+    VOFA* VOFA_pt = vofa_create();         //创建VOFA对象
+                 vofa_init(VOFA_pt,                     //初始化当前的vofa对象
+                           vofa_ch_data,ch_sz,
+                           custom_buf,custom_sz,
+                           cmd_rxbuf,cmd_sz,
+                           UART_2,UART_2,UART_2);
+
     while (TRUE)
     {
-
-        led_output();       // 根据当前状态点亮或者熄灭LED灯
+        if(gps_tau1201_flag){
+            gps_tau1201_flag = 0;
+            gps_data_parse();                           // 开始解析数据
+        }
+        UI();
         Key_Active();
-        UI();                                    // 参数显示
+        VOFA_Sent();
+        Servo_Motor_Control();
         Run_Start();
+        Run_Status_Set();
     }
 }
 
